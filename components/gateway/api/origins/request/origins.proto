@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package hurtlocker.api.origins.request;
+option go_package = "github.com/chuckleheads/hurtlocker/components/gateway/api/origins/request";
+
+message Origin {
+    string id = 1;
+    string name = 2;
+    string default_package_visibility = 3;
+}
+
+message GetOriginsReq {};
+
+message GetOriginReq {
+    string id = 1;
+}
+
+message CreateOriginReq {
+    string name = 1;
+    string default_package_visibility = 2;
+}
