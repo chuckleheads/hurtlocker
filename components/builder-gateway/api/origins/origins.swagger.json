@@ -1,0 +1,134 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "components/builder-gateway/api/origins/origins.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/origins": {
+      "post": {
+        "operationId": "CreateOrigin",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/responseOriginResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requestCreateOriginReq"
+            }
+          }
+        ],
+        "tags": [
+          "Origins"
+        ]
+      }
+    },
+    "/origins/{id}": {
+      "get": {
+        "operationId": "GetOrigin",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/responseOriginResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Origins"
+        ]
+      },
+      "post": {
+        "operationId": "UpdateOrigin",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/responseOriginResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Origins"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "originsresponseOrigin": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "default_package_visibility": {
+          "type": "string"
+        }
+      }
+    },
+    "requestCreateOriginReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "default_package_visibility": {
+          "type": "string"
+        }
+      }
+    },
+    "responseOriginResp": {
+      "type": "object",
+      "properties": {
+        "origin": {
+          "$ref": "#/definitions/originsresponseOrigin"
+        }
+      }
+    }
+  }
+}

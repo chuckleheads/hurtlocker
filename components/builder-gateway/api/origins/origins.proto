@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package hurtlocker.api.origins;
+option go_package = "github.com/chuckleheads/hurtlocker/components/builder-gateway/api/origins";
+
+import "google/api/annotations.proto";
+
+import "components/builder-gateway/api/origins/request/origins.proto";
+import "components/builder-gateway/api/origins/response/origins.proto";
+
+service Origins {
+    rpc GetOrigin (origins.request.GetOriginReq) returns (origins.response.OriginResp) {
+        option (google.api.http).get = "/origins/{id}";
+    };
+    rpc CreateOrigin (origins.request.CreateOriginReq) returns (origins.response.OriginResp) {
+        option (google.api.http) = {
+            post: "/origins"
+            body: "*"
+        };
+    };
+    rpc UpdateOrigin (origins.request.UpdateOriginReq) returns (origins.response.OriginResp) {
+        option (google.api.http) = {
+            post: "/origins/{id}"
+            body: "default_package_visibility"
+        };
+    };
+}

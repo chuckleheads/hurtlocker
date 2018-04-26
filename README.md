@@ -9,10 +9,3 @@ gRPC server with built in swagger support. This is far from being anywhere near 
 ```
 make protobufs
  ```
-
-#### Generating swagger defs
-```
-make swagger
-```
-
-If you just run `make` by itself, it will run both of the above commands.
