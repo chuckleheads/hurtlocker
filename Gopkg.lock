@@ -75,7 +75,7 @@
     "googleapis/api/annotations",
     "googleapis/rpc/status"
   ]
-  revision = "7fd901a49ba6a7f87732eb344f6e3c5b19d1b200"
+  revision = "86e600f69ee4704c6efbf6a2a40a5c10700e76c2"
 
 [[projects]]
   name = "google.golang.org/grpc"
@@ -110,6 +110,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "8bfc5c7d21d72732943d1d5b422bd35a9aac4e1f56750bdcbb05cbf9a5895404"
+  inputs-digest = "51d121f661f78295356b663164566361630a609bef1bb93df609090545d887de"
   solver-name = "gps-cdcl"
   solver-version = 1
