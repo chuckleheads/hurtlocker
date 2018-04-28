@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"context"
+	"golang.org/x/net/context"
 	"log"
 
 	pbreq "github.com/chuckleheads/hurtlocker/components/builder-gateway/api/origins/request"
@@ -33,6 +33,7 @@ func (s server) GetOrigin(ctx context.Context, req *pbreq.GetOriginReq) (*pbres.
 	}
 
 	origin, exists := s.origins[req.Id]
+
 	if !exists {
 		return nil, grpc.Errorf(codes.NotFound, "origin not found")
 	}

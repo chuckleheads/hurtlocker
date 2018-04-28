@@ -1,8 +1,8 @@
 package main
 
 import (
-	"context"
 	"fmt"
+	"golang.org/x/net/context"
 	"log"
 	"net"
 	"net/http"
@@ -36,13 +36,14 @@ func runGRPC(lis net.Listener) {
 }
 
 func runHTTP(clientAddr string) {
-
 	addr := ":6001"
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	mux := runtime.NewServeMux()
+
 	if err := pb.RegisterOriginsHandlerFromEndpoint(context.Background(), mux, clientAddr, opts); err != nil {
 		log.Fatalf("failed to start HTTP server: %v", err)
 	}
+
 	log.Printf("HTTP Listening on %s\n", addr)
 	log.Fatal(http.ListenAndServe(addr, mux))
 }
