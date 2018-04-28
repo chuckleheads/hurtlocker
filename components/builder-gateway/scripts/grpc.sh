@@ -19,7 +19,7 @@ for i in components/builder-gateway/api/**/**/; do
     protoc -I. \
       -I$GOPATH/src \
       -I$PWD/vendor \
-      -I$PWD/vendor/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+      -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
       --go_out=plugins=grpc:$GOPATH/src \
       ${list[@]}
 
@@ -27,7 +27,7 @@ for i in components/builder-gateway/api/**/**/; do
     protoc -I. \
       -I$GOPATH/src \
       -I$PWD/vendor \
-      -I$PWD/vendor/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+      -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
       --grpc-gateway_out=request_context=true,logtostderr=true:$GOPATH/src  \
       ${list[@]}
 
@@ -37,7 +37,7 @@ for i in components/builder-gateway/api/**/**/; do
       protoc -I. \
         -I$GOPATH/src \
         -I$PWD/vendor \
-        -I$PWD/vendor/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+				-I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
         --swagger_out=logtostderr=true:$PWD  \
         ${list[@]}
     fi
