@@ -23,14 +23,14 @@
   version = "0.2"
 
 [[projects]]
+  branch = "master"
   name = "github.com/grpc-ecosystem/grpc-gateway"
   packages = [
     "runtime",
     "runtime/internal",
     "utilities"
   ]
-  revision = "07f5e79768022f9a3265235f0db4ac8c3f675fec"
-  version = "v1.3.1"
+  revision = "3beac66ff7864c1f54f59c75d490e15c2a19adee"
 
 [[projects]]
   branch = "master"
@@ -110,6 +110,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "51d121f661f78295356b663164566361630a609bef1bb93df609090545d887de"
+  inputs-digest = "4c8c33954130d43ec2fec51fc361b3a5185bb76152385c2ee34f47f73a08d698"
   solver-name = "gps-cdcl"
   solver-version = 1
