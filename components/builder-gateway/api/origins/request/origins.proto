@@ -12,7 +12,7 @@ message Origin {
 message GetOriginsReq {};
 
 message GetOriginReq {
-    string id = 1;
+    string name = 1;
 }
 
 message CreateOriginReq {
@@ -21,6 +21,6 @@ message CreateOriginReq {
 }
 
 message UpdateOriginReq {
-    string id = 1;
+    string name = 1;
     string default_package_visibility = 2;
 }

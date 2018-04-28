@@ -28,11 +28,11 @@ func (s server) GetOrigin(ctx context.Context, req *pbreq.GetOriginReq) (*pbres.
 	// What should happen here is use the client that is defined in the "OriginServer" struct above
 	// which will allow you to talk gRPC to the "origin service" that will actually do database things
 
-	if req.Id == "" {
-		return nil, grpc.Errorf(codes.InvalidArgument, "Origin ID cannot be empty")
+	if req.Name == "" {
+		return nil, grpc.Errorf(codes.InvalidArgument, "Origin Name cannot be empty")
 	}
 
-	origin, exists := s.origins[req.Id]
+	origin, exists := s.origins[req.Name]
 
 	if !exists {
 		return nil, grpc.Errorf(codes.NotFound, "origin not found")
@@ -55,13 +55,13 @@ func (s server) CreateOrigin(ctx context.Context, req *pbreq.CreateOriginReq) (*
 
 	id := uuid.New().String()
 
-	s.origins[id] = pbres.Origin{
+	s.origins[req.Name] = pbres.Origin{
 		Id:   id,
 		Name: req.Name,
 		DefaultPackageVisibility: req.DefaultPackageVisibility,
 	}
 
-	origin := s.origins[id]
+	origin := s.origins[req.Name]
 
 	ores := pbres.OriginResp{
 		Origin: &origin,
@@ -74,13 +74,13 @@ func (s server) CreateOrigin(ctx context.Context, req *pbreq.CreateOriginReq) (*
 func (s server) UpdateOrigin(ctx context.Context, req *pbreq.UpdateOriginReq) (*pbres.OriginResp, error) {
 	log.Println("Updating origin!")
 
-	if req.Id == "" {
-		return nil, grpc.Errorf(codes.InvalidArgument, "Origin Id cannot be empty")
+	if req.Name == "" {
+		return nil, grpc.Errorf(codes.InvalidArgument, "Origin Name cannot be empty")
 	}
 
-	origin := s.origins[req.Id]
+	origin := s.origins[req.Name]
 	origin.DefaultPackageVisibility = req.DefaultPackageVisibility
-	s.origins[req.Id] = origin
+	s.origins[req.Name] = origin
 
 	ores := pbres.OriginResp{
 		Origin: &origin,

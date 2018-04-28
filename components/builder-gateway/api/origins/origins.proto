@@ -10,7 +10,7 @@ import "components/builder-gateway/api/origins/response/origins.proto";
 
 service Origins {
     rpc GetOrigin (origins.request.GetOriginReq) returns (origins.response.OriginResp) {
-        option (google.api.http).get = "/origins/{id}";
+        option (google.api.http).get = "/origins/{name}";
     };
     rpc CreateOrigin (origins.request.CreateOriginReq) returns (origins.response.OriginResp) {
         option (google.api.http) = {
@@ -20,8 +20,8 @@ service Origins {
     };
     rpc UpdateOrigin (origins.request.UpdateOriginReq) returns (origins.response.OriginResp) {
         option (google.api.http) = {
-            post: "/origins/{id}"
-            body: "default_package_visibility"
+            post: "/origins/{name}"
+            body: "*"
         };
     };
 }

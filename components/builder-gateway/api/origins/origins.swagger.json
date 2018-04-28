@@ -41,7 +41,7 @@
         ]
       }
     },
-    "/origins/{id}": {
+    "/origins/{name}": {
       "get": {
         "operationId": "GetOrigin",
         "responses": {
@@ -54,7 +54,7 @@
         },
         "parameters": [
           {
-            "name": "id",
+            "name": "name",
             "in": "path",
             "required": true,
             "type": "string"
@@ -76,7 +76,7 @@
         },
         "parameters": [
           {
-            "name": "id",
+            "name": "name",
             "in": "path",
             "required": true,
             "type": "string"
@@ -86,7 +86,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "string"
+              "$ref": "#/definitions/requestUpdateOriginReq"
             }
           }
         ],
@@ -112,6 +112,17 @@
       }
     },
     "requestCreateOriginReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "default_package_visibility": {
+          "type": "string"
+        }
+      }
+    },
+    "requestUpdateOriginReq": {
       "type": "object",
       "properties": {
         "name": {
