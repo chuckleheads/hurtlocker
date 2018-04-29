@@ -12,7 +12,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/chuckleheads/hurtlocker/components/builder-gateway/api/origins/request"
+	"github.com/chuckleheads/hurtlocker/components/originsrv/origins/request"
 	"github.com/golang/protobuf/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/utilities"

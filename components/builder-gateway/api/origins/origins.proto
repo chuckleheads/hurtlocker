@@ -5,20 +5,20 @@ option go_package = "github.com/chuckleheads/hurtlocker/components/builder-gatew
 
 import "google/api/annotations.proto";
 
-import "components/builder-gateway/api/origins/request/origins.proto";
-import "components/builder-gateway/api/origins/response/origins.proto";
+import "components/originsrv/origins/request/origins.proto";
+import "components/originsrv/origins/response/origins.proto";
 
 service Origins {
-    rpc GetOrigin (origins.request.GetOriginReq) returns (origins.response.OriginResp) {
+    rpc GetOrigin (originsrv.origins.request.GetOriginReq) returns (originsrv.origins.response.OriginResp) {
         option (google.api.http).get = "/origins/{name}";
     };
-    rpc CreateOrigin (origins.request.CreateOriginReq) returns (origins.response.OriginResp) {
+    rpc CreateOrigin (originsrv.origins.request.CreateOriginReq) returns (originsrv.origins.response.OriginResp) {
         option (google.api.http) = {
             post: "/origins"
             body: "*"
         };
     };
-    rpc UpdateOrigin (origins.request.UpdateOriginReq) returns (origins.response.OriginResp) {
+    rpc UpdateOrigin (originsrv.origins.request.UpdateOriginReq) returns (originsrv.origins.response.OriginResp) {
         option (google.api.http) = {
             post: "/origins/{name}"
             body: "*"

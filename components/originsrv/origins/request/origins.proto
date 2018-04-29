@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-package hurtlocker.api.origins.request;
-option go_package = "github.com/chuckleheads/hurtlocker/components/builder-gateway/api/origins/request";
+package hurtlocker.originsrv.origins.request;
+option go_package = "github.com/chuckleheads/hurtlocker/components/originsrv/origins/request";
 
 message Origin {
     string id = 1;
