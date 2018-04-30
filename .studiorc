@@ -1,0 +1,63 @@
+RED='\033[0;31m'
+NO_COLOR='\033[0m'
+
+install-packages() {
+  hab pkg install \
+  core/cacerts \
+  core/net-tools \
+  core/procps-ng \
+  core/curl \
+  -b -c stable
+}
+
+no_install_deps() {
+  local file="/src/cleanup"
+  if [ ! -f "$file" ]; then
+    touch "$file"
+  else
+    echo "1"
+  fi
+}
+
+# Cleanup any development touch files we laid down when checking to see if we could run NO_INSTALL_DEPS
+_cleanup() {
+  if [ -f "/src/cleanup" ]; then
+    rm "/src/cleanup"
+  fi
+}
+
+start-hurtlocker() {
+  start-originsrv
+  start-gateway
+}
+
+# start-datastore() {
+#   hab svc load core/postgresql
+# }
+
+start-originsrv() {
+  hab svc load edavis/originsrv
+}
+
+stop-originsrv() {
+  hab svc unload edavis/originsrv
+}
+
+start-gateway() {
+    hab svc load edavis/builder-gateway
+}
+
+stop-gateway() {
+    hab svc unload edavis/builder-gateway
+}
+
+build-gateway() {
+  stop-gateway
+  NO_INSTALL_DEPS=$(no_install_deps "builder-$component") \
+    build ./habitat-dev
+  start-api
+}
+
+trap _cleanup EXIT
+
+install-packages
