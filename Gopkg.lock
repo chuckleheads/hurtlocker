@@ -17,12 +17,6 @@
   version = "v1.0.0"
 
 [[projects]]
-  name = "github.com/google/uuid"
-  packages = ["."]
-  revision = "064e2069ce9c359c118179501254f67d7d37ba24"
-  version = "0.2"
-
-[[projects]]
   branch = "master"
   name = "github.com/grpc-ecosystem/grpc-gateway"
   packages = [
@@ -110,6 +104,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "4c8c33954130d43ec2fec51fc361b3a5185bb76152385c2ee34f47f73a08d698"
+  inputs-digest = "7e6918912710dd431090f855df569bab1d5bc535f7608f1607be50a591f31408"
   solver-name = "gps-cdcl"
   solver-version = 1

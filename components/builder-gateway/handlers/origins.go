@@ -1,91 +1,52 @@
 package handlers
 
 import (
-	"golang.org/x/net/context"
 	"log"
 
-	pbreq "github.com/chuckleheads/hurtlocker/components/builder-gateway/api/origins/request"
-	pbres "github.com/chuckleheads/hurtlocker/components/builder-gateway/api/origins/response"
+	"golang.org/x/net/context"
 
-	"github.com/google/uuid"
+	pbreq "github.com/chuckleheads/hurtlocker/components/originsrv/origins/request"
+	pbres "github.com/chuckleheads/hurtlocker/components/originsrv/origins/response"
+
+	"github.com/chuckleheads/hurtlocker/components/originsrv/origins"
+
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
 )
 
-type server struct {
-	origins map[string]pbres.Origin
+type OriginSrv struct {
+	client origins.OriginsClient
 }
 
-func NewOriginsServer() server {
-	return server{
-		origins: make(map[string]pbres.Origin),
+func NewOriginsServer(client origins.OriginsClient) *OriginSrv {
+	return &OriginSrv{
+		client: client,
 	}
 }
 
-func (s server) GetOrigin(ctx context.Context, req *pbreq.GetOriginReq) (*pbres.OriginResp, error) {
+func Dialer() *grpc.ClientConn {
+	conn, err := grpc.Dial("localhost:7000", grpc.WithInsecure())
+	if err != nil {
+		panic(err.Error())
+	}
+	defer conn.Close()
+	return conn
+}
+
+func (s OriginSrv) GetOrigin(ctx context.Context, req *pbreq.GetOriginReq) (*pbres.OriginResp, error) {
 	log.Println("Getting origin!")
 
-	// What should happen here is use the client that is defined in the "OriginServer" struct above
-	// which will allow you to talk gRPC to the "origin service" that will actually do database things
-
-	if req.Name == "" {
-		return nil, grpc.Errorf(codes.InvalidArgument, "Origin Name cannot be empty")
-	}
-
-	origin, exists := s.origins[req.Name]
-
-	if !exists {
-		return nil, grpc.Errorf(codes.NotFound, "origin not found")
-	}
-
-	ores := pbres.OriginResp{
-		Origin: &origin,
-	}
-
-	log.Println("Origin found!")
-	return &ores, nil
+	// These need to change to only get passed what they need - too tired to think about it
+	return s.client.GetOrigin(ctx, req)
 }
 
-func (s server) CreateOrigin(ctx context.Context, req *pbreq.CreateOriginReq) (*pbres.OriginResp, error) {
+func (s OriginSrv) CreateOrigin(ctx context.Context, req *pbreq.CreateOriginReq) (*pbres.OriginResp, error) {
 	log.Println("Creating origin!")
 
-	if req.Name == "" {
-		return nil, grpc.Errorf(codes.InvalidArgument, "Origin Name cannot be empty")
-	}
-
-	id := uuid.New().String()
-
-	s.origins[req.Name] = pbres.Origin{
-		Id:   id,
-		Name: req.Name,
-		DefaultPackageVisibility: req.DefaultPackageVisibility,
-	}
-
-	origin := s.origins[req.Name]
-
-	ores := pbres.OriginResp{
-		Origin: &origin,
-	}
-
-	log.Println("Origin created!")
-	return &ores, nil
+	return s.client.CreateOrigin(ctx, req)
 }
 
-func (s server) UpdateOrigin(ctx context.Context, req *pbreq.UpdateOriginReq) (*pbres.OriginResp, error) {
+func (s OriginSrv) UpdateOrigin(ctx context.Context, req *pbreq.UpdateOriginReq) (*pbres.OriginResp, error) {
 	log.Println("Updating origin!")
 
-	if req.Name == "" {
-		return nil, grpc.Errorf(codes.InvalidArgument, "Origin Name cannot be empty")
-	}
-
-	origin := s.origins[req.Name]
-	origin.DefaultPackageVisibility = req.DefaultPackageVisibility
-	s.origins[req.Name] = origin
-
-	ores := pbres.OriginResp{
-		Origin: &origin,
-	}
-
-	log.Println("Origin updated!")
-	return &ores, nil
+	return s.client.UpdateOrigin(ctx, req)
 }

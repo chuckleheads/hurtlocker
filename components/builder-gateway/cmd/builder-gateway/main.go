@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	"golang.org/x/net/context"
 	"log"
 	"net"
 	"net/http"
 
+	"golang.org/x/net/context"
+
 	pb "github.com/chuckleheads/hurtlocker/components/builder-gateway/api/origins"
 	"github.com/chuckleheads/hurtlocker/components/builder-gateway/handlers"
-
+	originsrv "github.com/chuckleheads/hurtlocker/components/originsrv/origins"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
 )
@@ -29,7 +30,7 @@ func main() {
 
 func runGRPC(lis net.Listener) {
 	server := grpc.NewServer()
-	pb.RegisterOriginsServer(server, handlers.NewOriginsServer())
+	pb.RegisterOriginsServer(server, handlers.NewOriginsServer(originsrv.NewOriginsClient(handlers.Dialer())))
 
 	log.Printf("gRPC Listening on %s\n", lis.Addr().String())
 	server.Serve(lis)
