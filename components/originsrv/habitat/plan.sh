@@ -11,7 +11,7 @@ pkg_svc_run="${pkg_name}"
 
 export GOPATH="${HAB_CACHE_SRC_PATH}/go"
 export workspace_src="${GOPATH}/src"
-export base_path="github.com/chuckleheads/hurtlocker/components"
+export base_path="github.com/chuckleheads/hurtlocker"
 export pkg_cache_path="${workspace_src}/${base_path}"
 
 do_before() {
@@ -30,4 +30,9 @@ do_build() {
 
 do_install() {
   cp -r "${GOPATH}/bin" "${pkg_prefix}/${bin}"
+}
+
+do_clean() {
+  do_default_clean
+  rm -rf "${GO_PATH}"
 }
