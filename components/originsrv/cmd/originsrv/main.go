@@ -4,6 +4,7 @@ import (
 	"log"
 	"net"
 
+	pb "github.com/chuckleheads/hurtlocker/components/originsrv/origins"
 	"google.golang.org/grpc"
 )
 
@@ -20,7 +21,7 @@ func main() {
 
 func runGRPC(lis net.Listener) {
 	server := grpc.NewServer()
-	// pb.RegisterOriginsServer(server, handlers.NewOriginsServer())
+	pb.RegisterOriginsServer(server, pb.OriginsServer{})
 
 	log.Printf("gRPC Listening on %s\n", lis.Addr().String())
 	server.Serve(lis)
