@@ -28,7 +28,7 @@ func Dialer() *grpc.ClientConn {
 	if err != nil {
 		panic(err.Error())
 	}
-	defer conn.Close()
+	// defer conn.Close()
 	return conn
 }
 

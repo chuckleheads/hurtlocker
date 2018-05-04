@@ -27,28 +27,33 @@ _cleanup() {
 }
 
 start-hurtlocker() {
+  start-datastore
   start-originsrv
   start-gateway
 }
 
-# start-datastore() {
-#   hab svc load core/postgresql
-# }
+start-datastore() {
+  hab svc load chuckleheads/builder-datastore
+}
+
+stop-datastore() {
+  hab svc unload chuckleheads/builder-datastore
+}
 
 start-originsrv() {
-  hab svc load edavis/originsrv
+  hab svc load chuckleheads/originsrv
 }
 
 stop-originsrv() {
-  hab svc unload edavis/originsrv
+  hab svc unload chuckleheads/originsrv
 }
 
 start-gateway() {
-    hab svc load edavis/builder-gateway
+    hab svc load chuckleheads/builder-gateway
 }
 
 stop-gateway() {
-    hab svc unload edavis/builder-gateway
+    hab svc unload chuckleheads/builder-gateway
 }
 
 build-gateway() {
