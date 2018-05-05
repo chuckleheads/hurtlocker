@@ -3,8 +3,9 @@
 GOPATH=$(go env GOPATH)
 
 RED='\033[0;31m'
+GREEN='\033[0;32m'
 NC='\033[0m' # No Color
-printf "\n${RED}Generate Go, Swagger and GRPC Gateway${NC}\n"
+printf "\n${GREEN}Generate Go, Swagger and GRPC Gateway${NC}\n"
 
 shopt -s globstar
 for i in components/builder-gateway/api/**/**/; do
