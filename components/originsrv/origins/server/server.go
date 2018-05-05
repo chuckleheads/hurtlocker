@@ -1,8 +1,9 @@
 package server
 
 import (
-	"context"
 	"fmt"
+
+	"golang.org/x/net/context"
 
 	"github.com/chuckleheads/hurtlocker/components/originsrv/origins/request"
 	"github.com/chuckleheads/hurtlocker/components/originsrv/origins/response"
