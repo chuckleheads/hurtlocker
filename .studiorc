@@ -1,6 +1,15 @@
 RED='\033[0;31m'
 NO_COLOR='\033[0m'
 
+stop-on-failure() {
+  (set -e; "$@");
+  rv=$?
+  if [ $rv -ne 0 ]; then
+    echo -e "${RED}ERROR: $* aborted due to error${NO_COLOR}"
+    return 1
+  fi
+}
+
 install-packages() {
   hab pkg install \
   core/cacerts \
@@ -56,12 +65,15 @@ stop-gateway() {
     hab svc unload chuckleheads/builder-gateway
 }
 
-build-gateway() {
-  stop-gateway
-  NO_INSTALL_DEPS=$(no_install_deps "builder-$component") \
-    build ./habitat-dev
-  start-api
+_build-originsrv() {
+  stop-originsrv
+  NO_INSTALL_DEPS=$(no_install_deps "originsrv") \
+    build "/src/components/originsrv/habitat"
+
+  echo "originsrv build succeeded"
+  start-originsrv
 }
+build-originsrv() { stop-on-failure _build-originsrv; }
 
 trap _cleanup EXIT
 
