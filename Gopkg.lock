@@ -36,6 +36,18 @@
   revision = "d34b9ff171c21ad295489235aec8b6626023cd04"
 
 [[projects]]
+  name = "github.com/mattes/migrate"
+  packages = [
+    ".",
+    "database",
+    "database/postgres",
+    "source",
+    "source/file"
+  ]
+  revision = "035c07716cd373d88456ec4d701402df52584cb4"
+  version = "v3.0.1"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/net"
   packages = [
@@ -113,6 +125,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "89946d0271c1a57685852bea14fa9d308553971be34defda14402b7a547c3509"
+  inputs-digest = "8ae6ce5833925a045f9f9f4e0937d1bec72da9a1a2864fa01cf81cf8c1dc246a"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -24,7 +24,14 @@ func main() {
 func runGRPC(lis net.Listener) {
 	server := grpc.NewServer()
 
-	pgCreds := data_store.DBConfig{}
+	pgCreds := data_store.DBConfig{
+		Port:     26257,
+		Host:     "localhost",
+		SSLMode:  "disable",
+		Database: "originsrv",
+		Username: "root",
+		Password: "",
+	}
 	pb.RegisterOriginsServer(server, srv.NewServer(pgCreds))
 
 	log.Printf("gRPC Listening on %s\n", lis.Addr().String())

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/chuckleheads/hurtlocker/components/originsrv/data_store/migrations"
 	_ "github.com/lib/pq"
 )
 
@@ -23,13 +24,6 @@ func New(cfg *DBConfig) *sql.DB {
 	if err != nil {
 		log.Fatal(err)
 	}
+	migrations.Migrate(db)
 	return db
 }
-
-// func (srv *Server) RunMigrations(db *sql.DB) {
-// 	// This format is not ideal =/
-// 	log.Println("Running db migrations")
-// 	if _, err := db.Exec("CREATE TABLE IF NOT EXISTS origins (id bigserial PRIMARY KEY, name TEXT NOT NULL UNIQUE, default_package_visibility text NOT NULL DEFAULT 'public')"); err != nil {
-// 		log.Fatal(err)
-// 	}
-// }
