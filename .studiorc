@@ -68,12 +68,23 @@ stop-gateway() {
 _build-originsrv() {
   stop-originsrv
   NO_INSTALL_DEPS=$(no_install_deps "originsrv") \
-    build "/src/components/originsrv/habitat"
+    build "/src/components/originsrv/habitat-dev"
 
   echo "originsrv build succeeded"
   start-originsrv
 }
 build-originsrv() { stop-on-failure _build-originsrv; }
+
+_build-gateway() {
+  stop-gateway
+  NO_INSTALL_DEPS=$(no_install_deps "builder-gateway") \
+    build "/src/components/builder-gateway/habitat-dev"
+
+  echo "gateway build succeeded"
+  start-gateway
+}
+build-gateway() { stop-on-failure _build-gateway; }
+
 
 trap _cleanup EXIT
 

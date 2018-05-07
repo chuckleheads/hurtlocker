@@ -10,7 +10,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-// TODO should be a server handle
 type Server struct {
 	db sql.DB
 }
