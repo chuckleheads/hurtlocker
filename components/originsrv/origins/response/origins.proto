@@ -4,7 +4,7 @@ package hurtlocker.originsrv.origins.response;
 option go_package = "github.com/chuckleheads/hurtlocker/components/originsrv/origins/response";
 
 message Origin {
-    string id = 1;
+    int64 id = 1;
     string name = 2;
     string default_package_visibility = 3;
 }

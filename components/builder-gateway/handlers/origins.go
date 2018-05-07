@@ -24,7 +24,7 @@ func NewOriginsServer(client origins.OriginsClient) *OriginSrv {
 }
 
 func Dialer() *grpc.ClientConn {
-	conn, err := grpc.Dial("localhost:7000", grpc.WithInsecure())
+	conn, err := grpc.Dial("localhost:7001", grpc.WithInsecure())
 	if err != nil {
 		panic(err.Error())
 	}
