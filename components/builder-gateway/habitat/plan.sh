@@ -3,7 +3,6 @@ source ../../../support/dev/hurtlocker-base-plan.sh
 
 pkg_name=builder-gateway
 pkg_origin=chuckleheads
-pkg_version=0.0.1
 pkg_description="Gateway server to proxy http requests to a gRPC service"
 pkg_upstream_url="https://github.com/chuckleheads/hurtlocker"
 pkg_license=('Apache-2.0')
