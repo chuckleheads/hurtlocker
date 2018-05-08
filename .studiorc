@@ -10,6 +10,10 @@ stop-on-failure() {
   fi
 }
 
+configure() {
+  /src/support/dev/config.sh
+}
+
 install-packages() {
   hab pkg install \
   core/cacerts \
@@ -89,3 +93,4 @@ build-gateway() { stop-on-failure _build-gateway; }
 trap _cleanup EXIT
 
 install-packages
+configure

@@ -2,4 +2,9 @@
 
 exec 2>&1
 
-exec cockroach start --insecure --store={{pkg.svc_data_path}} --log-dir={{pkg.svc_var_dir}}
+exec cockroach start \
+{{#if cfg.dev_mode ~}}
+--insecure \
+{{/if ~}}
+--store={{pkg.svc_data_path}} \
+--log-dir={{pkg.svc_var_dir}}
