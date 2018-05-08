@@ -1,3 +1,5 @@
+#!/bin/bash
+
 RED='\033[0;31m'
 NO_COLOR='\033[0m'
 
@@ -89,8 +91,27 @@ _build-gateway() {
 }
 build-gateway() { stop-on-failure _build-gateway; }
 
-
 trap _cleanup EXIT
+
+alias help=dev_docs
+dev_docs() {
+  cat <<DOCS
+Welcome to the development environment for hurtlocker.
+The following commands are available:
+
+* start-hurtlocker - Start up all the services
+* start-datastore - Start just the datastore
+* stop-datastore - Stop just the datastore
+* start-originsrv - Start just originsrv
+* stop-originsrv - Stop just originsrv
+* start-gateway - Start just the gateway
+* stop-gateway - Stop just the gateway
+* build-originsrv - Recompile originsrv. This will also automatically restart the service.
+* build-gateway - Recompile the gateway. This will also automatically restart the service.
+* dev_docs (alias: help) - What you're reading now
+
+DOCS
+}
 
 install-packages
 configure
