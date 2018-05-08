@@ -4,18 +4,17 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/chuckleheads/hurtlocker/components/originsrv/data_store"
 	"github.com/chuckleheads/hurtlocker/components/originsrv/origins/request"
 	"github.com/chuckleheads/hurtlocker/components/originsrv/origins/response"
 	_ "github.com/lib/pq"
 )
 
 type Server struct {
-	db sql.DB
+	db *sql.DB
 }
 
-func NewServer(dbConfig data_store.DBConfig) *Server {
-	return &Server{db: *data_store.New(&dbConfig)}
+func NewServer(db *sql.DB) *Server {
+	return &Server{db}
 }
 
 func (srv *Server) CreateOrigin(ctx context.Context, req *request.CreateOriginReq) (*response.OriginResp, error) {

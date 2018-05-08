@@ -32,7 +32,8 @@ func runGRPC(lis net.Listener) {
 		Username: "root",
 		Password: "",
 	}
-	pb.RegisterOriginsServer(server, srv.NewServer(pgCreds))
+	db := data_store.New(&pgCreds)
+	pb.RegisterOriginsServer(server, srv.NewServer(db))
 
 	log.Printf("gRPC Listening on %s\n", lis.Addr().String())
 	server.Serve(lis)
