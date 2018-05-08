@@ -20,7 +20,7 @@ service Origins {
     };
     rpc UpdateOrigin (originsrv.origins.request.UpdateOriginReq) returns (originsrv.origins.response.OriginResp) {
         option (google.api.http) = {
-            post: "/origins/{name}"
+            patch: "/origins/{name}"
             body: "*"
         };
     };
