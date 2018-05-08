@@ -43,7 +43,7 @@ do_hurtlocker_download() {
 }
 
 do_hurtlocker_build() {
-  pushd "${pkg_cache_path}/components/${pkg_name}/cmd/${pkg_name}" >/dev/null
+  pushd "${pkg_cache_path}/components/${pkg_name}" >/dev/null
   GOOS=linux go build -o "${GOPATH}/bin/${pkg_name}" .
   popd >/dev/null
 }
