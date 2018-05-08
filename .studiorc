@@ -91,6 +91,20 @@ _build-gateway() {
 }
 build-gateway() { stop-on-failure _build-gateway; }
 
+alias bh=build-hurtlocker
+_build-hurtlocker() {
+  if [[ $(hab sup status) == "No services loaded." ]]; then
+    start-hurtlocker
+  fi
+
+  if [[ "$#" -eq 0 ]]; then
+    build-originsrv
+    build-gateway
+    return $?
+  fi
+}
+build-hurtlocker() { stop-on-failure _build-hurtlocker; }
+
 trap _cleanup EXIT
 
 alias help=dev_docs
