@@ -6,7 +6,6 @@ import (
 	"log"
 
 	"github.com/chuckleheads/hurtlocker/components/originsrv/config"
-	"github.com/chuckleheads/hurtlocker/components/originsrv/data_store/migrations"
 	_ "github.com/lib/pq"
 )
 
@@ -16,6 +15,5 @@ func New(cfg *config.DBConfig) *sql.DB {
 	if err != nil {
 		log.Fatal(err)
 	}
-	migrations.Migrate(db)
 	return db
 }

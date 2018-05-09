@@ -2,6 +2,7 @@ package migrations
 
 import (
 	"database/sql"
+	"fmt"
 
 	_ "github.com/lib/pq"
 	"github.com/mattes/migrate"
@@ -9,15 +10,13 @@ import (
 	_ "github.com/mattes/migrate/source/file"
 )
 
-func Migrate(db *sql.DB) {
+func Migrate(db *sql.DB, migrations_dir string) {
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
 	if err != nil {
 		panic(err.Error())
 	}
-	// TED: really man? yeah this sucks but we need to hardcode
-	// this for now until we get some actual config
 	m, err := migrate.NewWithDatabaseInstance(
-		"file:///src/components/originsrv/migrations",
+		fmt.Sprintf("file://%s", migrations_dir),
 		"postgres", driver)
 	m.Up()
 }
