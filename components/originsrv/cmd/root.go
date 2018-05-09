@@ -21,9 +21,6 @@ examples and usage of using your application. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -42,10 +39,12 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is /hab/svc/originsrv/config/config.toml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	viper.SetDefault("host", "localhost")
+	viper.SetDefault("port", 26257)
+	viper.SetDefault("database", "originsrv")
+	viper.SetDefault("username", "root")
+	viper.SetDefault("password", "")
+	viper.SetDefault("ssl-mode", "disable")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -58,7 +57,7 @@ func initConfig() {
 
 		// Search config in home directory with name ".config" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName("config.toml")
+		viper.SetConfigName("config")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
