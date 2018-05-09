@@ -56,7 +56,7 @@ stop-datastore() {
 }
 
 start-originsrv() {
-  hab svc load chuckleheads/originsrv
+  hab svc load chuckleheads/originsrv --bind datastore:builder-datastore.default
 }
 
 stop-originsrv() {

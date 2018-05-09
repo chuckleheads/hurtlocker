@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/chuckleheads/hurtlocker/components/originsrv/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -66,4 +67,13 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
+}
+
+// DBConfigFromViper fetches database config from viper
+func DBConfigFromViper() (*config.DBConfig, error) {
+	cfg := &config.DBConfig{}
+	if err := viper.Unmarshal(cfg); err != nil {
+		panic(err.Error())
+	}
+	return cfg, nil
 }
