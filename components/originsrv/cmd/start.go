@@ -4,10 +4,12 @@ import (
 	"log"
 	"net"
 
+	"github.com/chuckleheads/hurtlocker/components/originsrv/config"
 	"github.com/chuckleheads/hurtlocker/components/originsrv/data_store"
 	pb "github.com/chuckleheads/hurtlocker/components/originsrv/origins"
 	srv "github.com/chuckleheads/hurtlocker/components/originsrv/origins/server"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 )
 
@@ -54,17 +56,21 @@ func setup() {
 func runGRPC(lis net.Listener) {
 	server := grpc.NewServer()
 
-	pgCreds := data_store.DBConfig{
-		Port:     26257,
-		Host:     "localhost",
-		SSLMode:  "disable",
-		Database: "originsrv",
-		Username: "root",
-		Password: "",
+	dbConfig, err := configFromViper()
+	if err != nil {
+		panic(err.Error())
 	}
-	db := data_store.New(&pgCreds)
+	db := data_store.New(dbConfig)
 	pb.RegisterOriginsServer(server, srv.NewServer(db))
 
 	log.Printf("gRPC Listening on %s\n", lis.Addr().String())
 	server.Serve(lis)
+}
+
+func configFromViper() (*config.DBConfig, error) {
+	cfg := &config.DBConfig{}
+	if err := viper.Unmarshal(cfg); err != nil {
+		panic(err.Error())
+	}
+	return cfg, nil
 }

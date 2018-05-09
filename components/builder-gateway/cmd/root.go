@@ -54,11 +54,11 @@ func initConfig() {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
 	} else {
-		home := filepath.Dir("/hab/svc/originsrv/config")
+		home := filepath.Dir("/hab/svc/builder-gateway/config")
 
-		// Search config in home directory with name ".config" (without extension).
+		// Search config in home directory with name "config" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName("config.toml")
+		viper.SetConfigName("config")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
