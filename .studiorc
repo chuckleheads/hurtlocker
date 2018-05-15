@@ -42,9 +42,19 @@ _cleanup() {
 }
 
 start-hurtlocker() {
+  start-rabbitmq
   start-datastore
   start-originsrv
   start-gateway
+  start-agent
+}
+
+start-rabbitmq() {
+  hab svc load core/rabbitmq
+}
+
+stop-rabbitmq() {
+  hab svc unload core/rabbitmq
 }
 
 start-datastore() {
@@ -71,6 +81,14 @@ stop-gateway() {
     hab svc unload chuckleheads/builder-gateway
 }
 
+start-agent() {
+    hab svc load chuckleheads/builder-agent --bind rabbitmq:rabbitmq.default
+}
+
+stop-agent() {
+    hab svc unload chuckleheads/builder-agent
+}
+
 _build-originsrv() {
   stop-originsrv
   NO_INSTALL_DEPS=$(no_install_deps "originsrv") \
@@ -91,6 +109,16 @@ _build-gateway() {
 }
 build-gateway() { stop-on-failure _build-gateway; }
 
+_build-agent() {
+  stop-agent
+  NO_INSTALL_DEPS=$(no_install_deps "builder-agent") \
+    build "/src/components/builder-agent/habitat-dev"
+
+  echo "agent build succeeded"
+  start-agent
+}
+build-agent() { stop-on-failure _build-agent; }
+
 alias bh=build-hurtlocker
 _build-hurtlocker() {
   if [[ $(hab sup status) == "No services loaded." ]]; then
@@ -100,6 +128,7 @@ _build-hurtlocker() {
   if [[ "$#" -eq 0 ]]; then
     build-originsrv
     build-gateway
+    build-agent
     return $?
   fi
 }

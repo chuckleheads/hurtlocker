@@ -135,6 +135,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/streadway/amqp"
+  packages = ["."]
+  revision = "8e4aba63da9fc5571e01c6a45dc809a58cbc5a68"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -223,6 +229,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c2795bb1caaa8d7834d9d1ee8fdbee01ba9afe9e54286cab7c261e3ef7207759"
+  inputs-digest = "71d6002a8e9e428469af28531ed6b2b1b749e9d4cec6e6d2aad7676733b8be71"
   solver-name = "gps-cdcl"
   solver-version = 1

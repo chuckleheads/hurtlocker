@@ -50,7 +50,7 @@ do_hurtlocker_build() {
 
 do_hurtlocker_install() {
   cp -r "${GOPATH}/bin" "${pkg_prefix}/${bin}"
-  if [ -d "${pkg_cache_path}/components/${pkg_name}/migrations"]; then
+  if [[ -d "${pkg_cache_path}/components/${pkg_name}/migrations" ]]; then
     cp -r "${pkg_cache_path}/components/${pkg_name}/migrations" "${pkg_prefix}/"
   fi
 }
