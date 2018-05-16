@@ -58,15 +58,15 @@ stop-rabbitmq() {
 }
 
 start-datastore() {
-  hab svc load chuckleheads/builder-datastore
+  hab svc load chuckleheads/datastore
 }
 
 stop-datastore() {
-  hab svc unload chuckleheads/builder-datastore
+  hab svc unload chuckleheads/datastore
 }
 
 start-originsrv() {
-  hab svc load chuckleheads/originsrv --bind datastore:builder-datastore.default
+  hab svc load chuckleheads/originsrv --bind datastore:datastore.default
 }
 
 stop-originsrv() {
@@ -74,19 +74,19 @@ stop-originsrv() {
 }
 
 start-gateway() {
-    hab svc load chuckleheads/builder-gateway
+    hab svc load chuckleheads/gateway
 }
 
 stop-gateway() {
-    hab svc unload chuckleheads/builder-gateway
+    hab svc unload chuckleheads/gateway
 }
 
 start-agent() {
-    hab svc load chuckleheads/builder-agent --bind rabbitmq:rabbitmq.default
+    hab svc load chuckleheads/agent --bind rabbitmq:rabbitmq.default
 }
 
 stop-agent() {
-    hab svc unload chuckleheads/builder-agent
+    hab svc unload chuckleheads/agent
 }
 
 _build-originsrv() {
@@ -101,8 +101,8 @@ build-originsrv() { stop-on-failure _build-originsrv; }
 
 _build-gateway() {
   stop-gateway
-  NO_INSTALL_DEPS=$(no_install_deps "builder-gateway") \
-    build "/src/components/builder-gateway/habitat-dev"
+  NO_INSTALL_DEPS=$(no_install_deps "gateway") \
+    build "/src/components/gateway/habitat-dev"
 
   echo "gateway build succeeded"
   start-gateway
@@ -111,8 +111,8 @@ build-gateway() { stop-on-failure _build-gateway; }
 
 _build-agent() {
   stop-agent
-  NO_INSTALL_DEPS=$(no_install_deps "builder-agent") \
-    build "/src/components/builder-agent/habitat-dev"
+  NO_INSTALL_DEPS=$(no_install_deps "agent") \
+    build "/src/components/agent/habitat-dev"
 
   echo "agent build succeeded"
   start-agent

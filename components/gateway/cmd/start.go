@@ -7,8 +7,8 @@ import (
 	"net"
 	"net/http"
 
-	pb "github.com/chuckleheads/hurtlocker/components/builder-gateway/api/origins"
-	"github.com/chuckleheads/hurtlocker/components/builder-gateway/handlers"
+	pb "github.com/chuckleheads/hurtlocker/components/gateway/api/origins"
+	"github.com/chuckleheads/hurtlocker/components/gateway/handlers"
 	originsrv "github.com/chuckleheads/hurtlocker/components/originsrv/origins"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"

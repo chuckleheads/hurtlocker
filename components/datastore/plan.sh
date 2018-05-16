@@ -1,4 +1,4 @@
-pkg_name=builder-datastore
+pkg_name=datastore
 pkg_origin=chuckleheads
 pkg_version=0.0.1
 pkg_description="cockroach database for builder chuckleheads"
