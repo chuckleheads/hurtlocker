@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/chuckleheads/hurtlocker/components/builder-agent/config"
+	"github.com/chuckleheads/hurtlocker/components/agent/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -15,7 +15,7 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "builder-agent",
+	Use:   "agent",
 	Short: "An agent that watches the builder scheduler queue for work",
 	Long: `Builder Agent watches the scheduler work queue and translates payloads
 into runnable workloads for Builder Tasker
@@ -33,7 +33,7 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is /hab/svc/builder-agent/config/config.toml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is /hab/svc/agent/config/config.toml)")
 	viper.SetDefault("host", "localhost")
 	viper.SetDefault("port", 5672)
 	viper.SetDefault("username", "guest")
@@ -47,7 +47,7 @@ func initConfig() {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
 	} else {
-		home := filepath.Dir("/hab/svc/builder-agent/config")
+		home := filepath.Dir("/hab/svc/agent/config")
 
 		// Search config in home directory with name ".config" (without extension).
 		viper.AddConfigPath(home)

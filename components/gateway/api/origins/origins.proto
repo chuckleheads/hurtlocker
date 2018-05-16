@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package hurtlocker.api.origins;
-option go_package = "github.com/chuckleheads/hurtlocker/components/builder-gateway/api/origins";
+option go_package = "github.com/chuckleheads/hurtlocker/components/gateway/api/origins";
 
 import "google/api/annotations.proto";
 

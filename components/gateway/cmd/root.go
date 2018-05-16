@@ -54,7 +54,7 @@ func initConfig() {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
 	} else {
-		home := filepath.Dir("/hab/svc/builder-gateway/config")
+		home := filepath.Dir("/hab/svc/gateway/config")
 
 		// Search config in home directory with name "config" (without extension).
 		viper.AddConfigPath(home)

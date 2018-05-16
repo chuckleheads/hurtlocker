@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 printf "\n${GREEN}Generate Go, Swagger and GRPC Gateway${NC}\n"
 
 shopt -s globstar
-for i in components/builder-gateway/api/**/**/; do
+for i in components/gateway/api/**/**/; do
   # check if there are proto file is in that directory
   protos=(`find $i -maxdepth 1 -name "*.proto"`)
   if [ ${#protos[@]} -gt 0 ]; then

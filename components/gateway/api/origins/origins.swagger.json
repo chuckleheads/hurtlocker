@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "components/builder-gateway/api/origins/origins.proto",
+    "title": "components/gateway/api/origins/origins.proto",
     "version": "version not set"
   },
   "schemes": [

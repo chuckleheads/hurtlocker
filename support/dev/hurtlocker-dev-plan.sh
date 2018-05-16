@@ -24,10 +24,12 @@ do_hurtlocker_install() {
   if [ -f "$PLAN_CONTEXT/config/config.toml" ]; then
     cp -v "$PLAN_CONTEXT/config/config.toml" "$pkg_path/config/config.toml"
   fi
-  build_line "Copying run hooks into package"
-  for hook in "$PLAN_CONTEXT"/hooks/*; do
-    cp -v "$hook" "$pkg_path/hooks/$(basename "$hook")"
-  done
+	if [ -d "$PLAN_CONTEXT/hooks" ]; then
+		build_line "Copying run hooks into package"
+		for hook in "$PLAN_CONTEXT"/hooks/*; do
+			cp -v "$hook" "$pkg_path/hooks/$(basename "$hook")"
+		done
+	fi
 }
 
 do_install_wrapper() {

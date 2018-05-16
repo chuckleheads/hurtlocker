@@ -14,7 +14,7 @@
 
 package main
 
-import "github.com/chuckleheads/hurtlocker/components/builder-agent/cmd"
+import "github.com/chuckleheads/hurtlocker/components/agent/cmd"
 
 func main() {
 	cmd.Execute()
