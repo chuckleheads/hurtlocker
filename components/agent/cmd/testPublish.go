@@ -17,9 +17,9 @@ package cmd
 import (
 	"fmt"
 	"log"
-	"os"
-	"strings"
 
+	"github.com/chuckleheads/hurtlocker/components/agent/proto/build"
+	"github.com/golang/protobuf/proto"
 	"github.com/spf13/cobra"
 	"github.com/streadway/amqp"
 )
@@ -40,42 +40,40 @@ var testPublishCmd = &cobra.Command{
 		failOnError(err, "Failed to open a channel")
 		defer ch.Close()
 
-		q, err := ch.QueueDeclare(
-			"task_queue", // name
-			true,         // durable
-			false,        // delete when unused
-			false,        // exclusive
-			false,        // no-wait
-			nil,          // arguments
+		err = ch.ExchangeDeclare(
+			config.Exchange, // name
+			"topic",         // type
+			true,            // durable
+			false,           // auto-deleted
+			false,           // internal
+			false,           // no-wait
+			nil,             // arguments
 		)
-		failOnError(err, "Failed to declare a queue")
+		failOnError(err, "Failed to declare an exchange")
 
-		body := bodyFrom(os.Args)
+		buildReq := &build.Build{
+			PackageName: "core/foobears",
+		}
+
+		body, err := proto.Marshal(buildReq)
+		if err != nil {
+			log.Fatalln("Failed to encode address book:", err)
+		}
 		err = ch.Publish(
-			"",     // exchange
-			q.Name, // routing key
-			false,  // mandatory
-			false,
+			config.Exchange, // exchange
+			"build",         // routing key
+			false,           // mandatory
+			false,           // immediate
 			amqp.Publishing{
-				DeliveryMode: amqp.Persistent,
-				ContentType:  "text/plain",
-				Body:         []byte(body),
+				ContentType: "text/plain",
+				Body:        []byte(body),
 			})
 		failOnError(err, "Failed to publish a message")
+
 		log.Printf(" [x] Sent %s", body)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(testPublishCmd)
-}
-
-func bodyFrom(args []string) string {
-	var s string
-	if (len(args) < 2) || os.Args[1] == "" {
-		s = "hello"
-	} else {
-		s = strings.Join(args[1:], " ")
-	}
-	return s
 }

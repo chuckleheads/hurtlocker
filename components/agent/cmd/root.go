@@ -38,6 +38,9 @@ func init() {
 	viper.SetDefault("port", 5672)
 	viper.SetDefault("username", "guest")
 	viper.SetDefault("password", "guest")
+	viper.SetDefault("exchange", "work")
+	// Listen for all topics by default
+	viper.SetDefault("topic", [1]string{"#"})
 
 }
 
