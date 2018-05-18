@@ -1,11 +1,10 @@
 package cmd
 
 import (
-	"bytes"
 	"fmt"
 	"log"
-	"time"
 
+	"github.com/chuckleheads/hurtlocker/components/agent/dispatcher"
 	"github.com/spf13/cobra"
 	"github.com/streadway/amqp"
 )
@@ -23,31 +22,46 @@ var startCmd = &cobra.Command{
 		failOnError(err, "Failed to open a channel")
 		defer ch.Close()
 
-		// only fetch one message at a time
-		err = ch.Qos(
-			1,     // prefetch count
-			0,     // prefetch size
-			false, // global
+		err = ch.ExchangeDeclare(
+			config.Exchange, // name
+			"topic",         // type
+			true,            // durable
+			false,           // auto-deleted
+			false,           // internal
+			false,           // no-wait
+			nil,             // arguments
 		)
-		failOnError(err, "Failed to set QoS")
+		failOnError(err, "Failed to declare an exchange")
 
 		q, err := ch.QueueDeclare(
-			"task_queue", // name
-			true,         // durable
-			false,        // delete when usused
-			false,        // exclusive
-			false,        // no-wait
-			nil,          // arguments
+			"",    // name
+			false, // durable
+			false, // delete when usused
+			true,  // exclusive
+			false, // no-wait
+			nil,   // arguments
 		)
 		failOnError(err, "Failed to declare a queue")
+
+		for _, s := range config.Topic {
+			log.Printf("Binding queue %s to exchange %s with routing key %s",
+				q.Name, config.Exchange, s)
+			err = ch.QueueBind(
+				q.Name,          // queue name
+				s,               // routing key
+				config.Exchange, // exchange
+				false,
+				nil)
+			failOnError(err, "Failed to bind a queue")
+		}
 
 		msgs, err := ch.Consume(
 			q.Name, // queue
 			"",     // consumer
-			false,  // auto-ack
+			true,   // auto ack
 			false,  // exclusive
-			false,  // no-local
-			false,  // no-wait
+			false,  // no local
+			false,  // no wait
 			nil,    // args
 		)
 		failOnError(err, "Failed to register a consumer")
@@ -56,16 +70,20 @@ var startCmd = &cobra.Command{
 
 		go func() {
 			for d := range msgs {
-				log.Printf("Received a message: %s", d.Body)
-				dotCount := bytes.Count(d.Body, []byte("."))
-				t := time.Duration(dotCount)
-				time.Sleep(t * time.Second)
-				log.Printf("Done")
-				d.Ack(false)
+				switch d.RoutingKey {
+				case "build":
+					dispatcher.Build(d.Body)
+				case "deploy":
+					dispatcher.Deploy(d.Body)
+				case "export":
+					dispatcher.Export(d.Body)
+				default:
+					panic("unreachable")
+				}
 			}
 		}()
 
-		log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
+		log.Printf(" [*] Waiting for logs. To exit press CTRL+C")
 		<-forever
 	},
 }

@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package hurtlocker.agent.deploy;
+option go_package = "github.com/chuckleheads/hurtlocker/components/agent/proto/deploy";
+
+message Deploy {
+    string packageName = 1;
+}

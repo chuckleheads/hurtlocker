@@ -7,3 +7,4 @@ all: protobufs
 protobufs:
 	components/originsrv/scripts/grpc.sh
 	components/gateway/scripts/grpc.sh
+	components/agent/scripts/grpc.sh
