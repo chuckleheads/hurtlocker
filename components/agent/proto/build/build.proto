@@ -4,5 +4,6 @@ package hurtlocker.agent.build;
 option go_package = "github.com/chuckleheads/hurtlocker/components/agent/proto/build";
 
 message Build {
-    string packageName = 1;
+    string packagePath = 1;
+    string origin = 2;
 }

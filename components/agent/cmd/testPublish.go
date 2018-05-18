@@ -52,7 +52,7 @@ var testPublishCmd = &cobra.Command{
 		failOnError(err, "Failed to declare an exchange")
 
 		buildReq := &build.Build{
-			PackageName: "core/foobears",
+			PackagePath: ".",
 		}
 
 		body, err := proto.Marshal(buildReq)

@@ -8,6 +8,12 @@
   version = "v1.4.7"
 
 [[projects]]
+  name = "github.com/go-cmd/cmd"
+  packages = ["."]
+  revision = "b84ca4f2247327f07f46331c260675cba1a1dc7a"
+  version = "v1.0.3"
+
+[[projects]]
   name = "github.com/golang/protobuf"
   packages = [
     "jsonpb",
@@ -229,6 +235,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "71d6002a8e9e428469af28531ed6b2b1b749e9d4cec6e6d2aad7676733b8be71"
+  inputs-digest = "d84f80feab251237f5844197a64d646c2117ba806b682ca2c4cff103f500d8c7"
   solver-name = "gps-cdcl"
   solver-version = 1
