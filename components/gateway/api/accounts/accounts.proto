@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package hurtlocker.api.accounts;
+option go_package = "github.com/chuckleheads/hurtlocker/components/gateway/api/accounts";
+
+import "google/api/annotations.proto";
+
+import "components/sessionsrv/accounts/request/accounts.proto";
+import "components/sessionsrv/accounts/response/accounts.proto";
+
+service Accounts {
+    rpc GetAccount (sessionsrv.accounts.request.GetAccountReq) returns (sessionsrv.accounts.response.AccountResp) {
+        option (google.api.http).get = "/accounts/{username}";
+    };
+    rpc CreateAccount (sessionsrv.accounts.request.CreateAccountReq) returns (sessionsrv.accounts.response.AccountResp) {
+        option (google.api.http) = {
+            post: "/accounts"
+            body: "*"
+        };
+    };
+    rpc UpdateAccount (sessionsrv.accounts.request.UpdateAccountReq) returns (sessionsrv.accounts.response.AccountResp) {
+        option (google.api.http) = {
+            patch: "/accounts/{username}"
+            body: "*"
+        };
+    };
+}

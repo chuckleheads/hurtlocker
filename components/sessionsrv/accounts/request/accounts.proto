@@ -19,6 +19,7 @@ message CreateAccountReq {
 }
 
 message UpdateAccountReq {
-    string email = 1;
+    string username = 1;
+    string email = 2;
 }
 

@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/chuckleheads/hurtlocker/components/originsrv/origins/request"
-	"github.com/chuckleheads/hurtlocker/components/originsrv/origins/response"
+	"github.com/chuckleheads/hurtlocker/components/sessionsrv/accounts/request"
+	"github.com/chuckleheads/hurtlocker/components/sessionsrv/accounts/response"
 	_ "github.com/lib/pq"
 
 	"google.golang.org/grpc"
@@ -20,66 +20,66 @@ func NewServer(db *sql.DB) *Server {
 	return &Server{db}
 }
 
-func (srv *Server) CreateOrigin(ctx context.Context, req *request.CreateOriginReq) (*response.OriginResp, error) {
+func (srv *Server) CreateAccount(ctx context.Context, req *request.CreateAccountReq) (*response.AccountResp, error) {
 	var id int64
-	// TED: This should be a postgres function, not inline code
+	// JB: This should be a postgres function, not inline code
 	err := srv.db.
-		QueryRow("INSERT INTO origins(name, default_package_visibility) VALUES($1, $2) RETURNING id", req.Name, req.DefaultPackageVisibility).
+		QueryRow("INSERT INTO accounts(username, email) VALUES($1, $2) RETURNING id", req.Username, req.Email).
 		Scan(&id)
 
-	// TED: Handle other errors here like row conflicts
+	// JB: Handle other errors here like row conflicts
 	if err != nil {
 		panic(err.Error())
 	}
 
-	origin := response.Origin{
-		Id:   id,
-		Name: req.Name,
-		DefaultPackageVisibility: req.DefaultPackageVisibility,
+	account := response.Account{
+		Id:       id,
+		Username: req.Username,
+		Email:    req.Email,
 	}
 
-	originResp := response.OriginResp{
-		Origin: &origin,
+	accountResp := response.AccountResp{
+		Account: &account,
 	}
 
-	return &originResp, nil
+	return &accountResp, nil
 }
 
-func (srv *Server) GetOrigin(ctx context.Context, req *request.GetOriginReq) (*response.OriginResp, error) {
-	var origin response.Origin
+func (srv *Server) GetAccount(ctx context.Context, req *request.GetAccountReq) (*response.AccountResp, error) {
+	var account response.Account
 
 	err := srv.db.
-		QueryRow("SELECT * FROM origins WHERE name = $1", req.Name).
-		Scan(&origin.Id, &origin.Name, &origin.DefaultPackageVisibility)
+		QueryRow("SELECT * FROM accounts WHERE username = $1", req.Username).
+		Scan(&account.Id, &account.Username, &account.Email)
 
 	if err != nil && err != sql.ErrNoRows {
 		panic(err.Error())
 	}
 
 	if err == nil {
-		resp := response.OriginResp{
-			Origin: &origin,
+		resp := response.AccountResp{
+			Account: &account,
 		}
 
 		return &resp, nil
 	} else {
-		return nil, grpc.Errorf(codes.NotFound, "%s", req.Name)
+		return nil, grpc.Errorf(codes.NotFound, "%s", req.Username)
 	}
 }
 
-func (srv *Server) UpdateOrigin(ctx context.Context, req *request.UpdateOriginReq) (*response.OriginResp, error) {
-	var origin response.Origin
+func (srv *Server) UpdateAccount(ctx context.Context, req *request.UpdateAccountReq) (*response.AccountResp, error) {
+	var account response.Account
 	err := srv.db.
-		QueryRow("UPDATE origins SET default_package_visibility = $1 WHERE name = $2 RETURNING *", req.DefaultPackageVisibility, req.Name).
-		Scan(&origin.Id, &origin.Name, &origin.DefaultPackageVisibility)
+		QueryRow("UPDATE accounts SET email = $1 WHERE username = $2 RETURNING *", req.Email, req.Username).
+		Scan(&account.Id, &account.Username, &account.Email)
 
 	if err != nil {
 		panic(err.Error())
 	}
 
-	orgresp := response.OriginResp{
-		Origin: &origin,
+	actresp := response.AccountResp{
+		Account: &account,
 	}
 
-	return &orgresp, nil
+	return &actresp, nil
 }
