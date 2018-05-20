@@ -47,6 +47,7 @@ start-hurtlocker() {
   start-originsrv
   start-gateway
   start-agent
+  start-sessionsrv
 }
 
 start-rabbitmq() {
@@ -73,6 +74,14 @@ stop-originsrv() {
   hab svc unload chuckleheads/originsrv
 }
 
+start-sessionsrv() {
+  hab svc load chuckleheads/sessionsrv --bind datastore:datastore.default
+}
+
+stop-sessionsrv() {
+  hab svc unload chuckleheads/sessionsrv
+}
+
 start-gateway() {
     hab svc load chuckleheads/gateway
 }
@@ -89,35 +98,15 @@ stop-agent() {
     hab svc unload chuckleheads/agent
 }
 
-_build-originsrv() {
-  stop-originsrv
-  NO_INSTALL_DEPS=$(no_install_deps "originsrv") \
-    build "/src/components/originsrv/habitat-dev"
+_build-component() {
+  stop-$1
+  NO_INSTALL_DEPS=$(no_install_deps "$1") \
+    build "/src/components/$1/habitat-dev"
 
-  echo "originsrv build succeeded"
-  start-originsrv
+  echo "$1 build succeeded"
+  start-$1
 }
-build-originsrv() { stop-on-failure _build-originsrv; }
-
-_build-gateway() {
-  stop-gateway
-  NO_INSTALL_DEPS=$(no_install_deps "gateway") \
-    build "/src/components/gateway/habitat-dev"
-
-  echo "gateway build succeeded"
-  start-gateway
-}
-build-gateway() { stop-on-failure _build-gateway; }
-
-_build-agent() {
-  stop-agent
-  NO_INSTALL_DEPS=$(no_install_deps "agent") \
-    build "/src/components/agent/habitat-dev"
-
-  echo "agent build succeeded"
-  start-agent
-}
-build-agent() { stop-on-failure _build-agent; }
+build-component() { stop-on-failure _build-component "$1"; }
 
 alias bh=build-hurtlocker
 _build-hurtlocker() {
@@ -126,9 +115,10 @@ _build-hurtlocker() {
   fi
 
   if [[ "$#" -eq 0 ]]; then
-    build-originsrv
-    build-gateway
-    build-agent
+    build-component originsrv
+    build-component gateway
+    build-component agent
+    build-component sessionsrv
     return $?
   fi
 }

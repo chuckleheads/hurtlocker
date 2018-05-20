@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package hurtlocker.sessionsrv.accounts;
+option go_package = "github.com/chuckleheads/hurtlocker/components/sessionsrv/accounts";
+
+import "components/sessionsrv/accounts/request/accounts.proto";
+import "components/sessionsrv/accounts/response/accounts.proto";
+
+service Accounts {
+    rpc GetAccount (accounts.request.GetAccountReq) returns (accounts.response.AccountResp);
+    rpc CreateAccount (accounts.request.CreateAccountReq) returns (accounts.response.AccountResp);
+    rpc UpdateAccount (accounts.request.UpdateAccountReq) returns (accounts.response.AccountResp);
+}

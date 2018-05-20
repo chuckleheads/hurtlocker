@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package hurtlocker.sessionsrv.accounts.request;
+option go_package = "github.com/chuckleheads/hurtlocker/components/sessionsrv/accounts/request";
+
+message Account {
+    int64 id = 1;
+    string username = 2;
+    string email = 3;
+}
+
+message GetAccountReq {
+    string username = 1;
+}
+
+message CreateAccountReq {
+    string username = 1;
+    string email = 2;
+}
+
+message UpdateAccountReq {
+    string username = 1;
+    string email = 2;
+}
+

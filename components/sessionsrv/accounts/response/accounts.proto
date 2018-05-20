@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package hurtlocker.sessionsrv.accounts.response;
+option go_package = "github.com/chuckleheads/hurtlocker/components/sessionsrv/accounts/response";
+
+// TODO - this shouldn't be duplicated with the request
+message Account {
+    int64 id = 1;
+    string username = 2;
+    string email = 3;
+}
+
+message Accounts {
+    repeated Account accounts = 1;
+}
+
+message AccountResp {
+    Account account = 1;
+}
