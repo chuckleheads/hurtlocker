@@ -1,12 +1,17 @@
 package cmd
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"net"
+	"net/http"
 
+	pba "github.com/chuckleheads/hurtlocker/components/originsrv/api/origins"
 	"github.com/chuckleheads/hurtlocker/components/originsrv/data_store"
-	pb "github.com/chuckleheads/hurtlocker/components/originsrv/origins"
+	pbs "github.com/chuckleheads/hurtlocker/components/originsrv/origins"
 	srv "github.com/chuckleheads/hurtlocker/components/originsrv/origins/server"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
 )
@@ -31,13 +36,15 @@ func init() {
 
 func setup() {
 	addr := ":7001"
+	clientAddr := fmt.Sprintf("localhost%s", addr)
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		log.Fatalf("failed to initializa TCP listen: %v", err)
 	}
 	defer lis.Close()
 
-	runGRPC(lis)
+	go runGRPC(lis)
+	runHTTP(clientAddr)
 }
 
 func runGRPC(lis net.Listener) {
@@ -48,8 +55,20 @@ func runGRPC(lis net.Listener) {
 		panic(err.Error())
 	}
 	db := data_store.New(dbConfig)
-	pb.RegisterOriginsServer(server, srv.NewServer(db))
-
+	pbs.RegisterOriginsServer(server, srv.NewServer(db))
 	log.Printf("gRPC Listening on %s\n", lis.Addr().String())
 	server.Serve(lis)
+}
+
+func runHTTP(clientAddr string) {
+	addr := ":7002"
+	opts := []grpc.DialOption{grpc.WithInsecure()}
+	mux := runtime.NewServeMux()
+
+	if err := pba.RegisterOriginsHandlerFromEndpoint(context.Background(), mux, clientAddr, opts); err != nil {
+		log.Fatalf("failed to start HTTP server: %v", err)
+	}
+
+	log.Printf("HTTP Listening on %s\n", addr)
+	log.Fatal(http.ListenAndServe(addr, mux))
 }
