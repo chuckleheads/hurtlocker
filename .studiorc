@@ -45,7 +45,6 @@ start-hurtlocker() {
   start-rabbitmq
   start-datastore
   start-originsrv
-  start-gateway
   start-agent
   start-sessionsrv
 }
@@ -82,14 +81,6 @@ stop-sessionsrv() {
   hab svc unload chuckleheads/sessionsrv
 }
 
-start-gateway() {
-    hab svc load chuckleheads/gateway
-}
-
-stop-gateway() {
-    hab svc unload chuckleheads/gateway
-}
-
 start-agent() {
     hab svc load chuckleheads/agent --bind rabbitmq:rabbitmq.default
 }
@@ -116,7 +107,6 @@ _build-hurtlocker() {
 
   if [[ "$#" -eq 0 ]]; then
     build-component originsrv
-    build-component gateway
     build-component agent
     build-component sessionsrv
     return $?
@@ -137,10 +127,7 @@ The following commands are available:
 * stop-datastore - Stop just the datastore
 * start-originsrv - Start just originsrv
 * stop-originsrv - Stop just originsrv
-* start-gateway - Start just the gateway
-* stop-gateway - Stop just the gateway
 * build-originsrv - Recompile originsrv. This will also automatically restart the service.
-* build-gateway - Recompile the gateway. This will also automatically restart the service.
 * dev_docs (alias: help) - What you're reading now
 
 DOCS

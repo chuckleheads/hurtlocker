@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "components/gateway/api/origins/origins.proto",
+    "title": "components/sessionsrv/api/accounts/accounts.proto",
     "version": "version not set"
   },
   "schemes": [
@@ -15,14 +15,14 @@
     "application/json"
   ],
   "paths": {
-    "/origins": {
+    "/accounts": {
       "post": {
-        "operationId": "CreateOrigin",
+        "operationId": "CreateAccount",
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/responseOriginResp"
+              "$ref": "#/definitions/responseAccountResp"
             }
           }
         },
@@ -32,51 +32,51 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/requestCreateOriginReq"
+              "$ref": "#/definitions/requestCreateAccountReq"
             }
           }
         ],
         "tags": [
-          "Origins"
+          "Accounts"
         ]
       }
     },
-    "/origins/{name}": {
+    "/accounts/{username}": {
       "get": {
-        "operationId": "GetOrigin",
+        "operationId": "GetAccount",
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/responseOriginResp"
+              "$ref": "#/definitions/responseAccountResp"
             }
           }
         },
         "parameters": [
           {
-            "name": "name",
+            "name": "username",
             "in": "path",
             "required": true,
             "type": "string"
           }
         ],
         "tags": [
-          "Origins"
+          "Accounts"
         ]
       },
       "patch": {
-        "operationId": "UpdateOrigin",
+        "operationId": "UpdateAccount",
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/responseOriginResp"
+              "$ref": "#/definitions/responseAccountResp"
             }
           }
         },
         "parameters": [
           {
-            "name": "name",
+            "name": "username",
             "in": "path",
             "required": true,
             "type": "string"
@@ -86,59 +86,60 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/requestUpdateOriginReq"
+              "$ref": "#/definitions/requestUpdateAccountReq"
             }
           }
         ],
         "tags": [
-          "Origins"
+          "Accounts"
         ]
       }
     }
   },
   "definitions": {
-    "originsresponseOrigin": {
+    "accountsresponseAccount": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
           "format": "int64"
         },
-        "name": {
+        "username": {
           "type": "string"
         },
-        "default_package_visibility": {
+        "email": {
+          "type": "string"
+        }
+      },
+      "title": "TODO - this shouldn't be duplicated with the request"
+    },
+    "requestCreateAccountReq": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "email": {
           "type": "string"
         }
       }
     },
-    "requestCreateOriginReq": {
+    "requestUpdateAccountReq": {
       "type": "object",
       "properties": {
-        "name": {
+        "username": {
           "type": "string"
         },
-        "default_package_visibility": {
+        "email": {
           "type": "string"
         }
       }
     },
-    "requestUpdateOriginReq": {
+    "responseAccountResp": {
       "type": "object",
       "properties": {
-        "name": {
-          "type": "string"
-        },
-        "default_package_visibility": {
-          "type": "string"
-        }
-      }
-    },
-    "responseOriginResp": {
-      "type": "object",
-      "properties": {
-        "origin": {
-          "$ref": "#/definitions/originsresponseOrigin"
+        "account": {
+          "$ref": "#/definitions/accountsresponseAccount"
         }
       }
     }

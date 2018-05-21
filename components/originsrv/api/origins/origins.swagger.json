@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "components/gateway/api/accounts/accounts.proto",
+    "title": "components/originsrv/api/origins/origins.proto",
     "version": "version not set"
   },
   "schemes": [
@@ -15,14 +15,14 @@
     "application/json"
   ],
   "paths": {
-    "/accounts": {
+    "/origins": {
       "post": {
-        "operationId": "CreateAccount",
+        "operationId": "CreateOrigin",
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/responseAccountResp"
+              "$ref": "#/definitions/responseOriginResp"
             }
           }
         },
@@ -32,51 +32,52 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/requestCreateAccountReq"
+              "$ref": "#/definitions/requestCreateOriginReq"
             }
           }
         ],
         "tags": [
-          "Accounts"
+          "Origins"
         ]
       }
     },
-    "/accounts/{username}": {
+    "/origins/{name}": {
       "get": {
-        "operationId": "GetAccount",
+        "summary": "rpc GetOrigins (originsrv.origins.request.GetOriginsReq) returns (originsrv.origins.response.OriginsResp) {\n    option (google.api.http).get = \"/origins\";\n};",
+        "operationId": "GetOrigin",
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/responseAccountResp"
+              "$ref": "#/definitions/responseOriginResp"
             }
           }
         },
         "parameters": [
           {
-            "name": "username",
+            "name": "name",
             "in": "path",
             "required": true,
             "type": "string"
           }
         ],
         "tags": [
-          "Accounts"
+          "Origins"
         ]
       },
       "patch": {
-        "operationId": "UpdateAccount",
+        "operationId": "UpdateOrigin",
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/responseAccountResp"
+              "$ref": "#/definitions/responseOriginResp"
             }
           }
         },
         "parameters": [
           {
-            "name": "username",
+            "name": "name",
             "in": "path",
             "required": true,
             "type": "string"
@@ -86,60 +87,59 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/requestUpdateAccountReq"
+              "$ref": "#/definitions/requestUpdateOriginReq"
             }
           }
         ],
         "tags": [
-          "Accounts"
+          "Origins"
         ]
       }
     }
   },
   "definitions": {
-    "accountsresponseAccount": {
+    "originsresponseOrigin": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
           "format": "int64"
         },
-        "username": {
+        "name": {
           "type": "string"
         },
-        "email": {
-          "type": "string"
-        }
-      },
-      "title": "TODO - this shouldn't be duplicated with the request"
-    },
-    "requestCreateAccountReq": {
-      "type": "object",
-      "properties": {
-        "username": {
-          "type": "string"
-        },
-        "email": {
+        "default_package_visibility": {
           "type": "string"
         }
       }
     },
-    "requestUpdateAccountReq": {
+    "requestCreateOriginReq": {
       "type": "object",
       "properties": {
-        "username": {
+        "name": {
           "type": "string"
         },
-        "email": {
+        "default_package_visibility": {
           "type": "string"
         }
       }
     },
-    "responseAccountResp": {
+    "requestUpdateOriginReq": {
       "type": "object",
       "properties": {
-        "account": {
-          "$ref": "#/definitions/accountsresponseAccount"
+        "name": {
+          "type": "string"
+        },
+        "default_package_visibility": {
+          "type": "string"
+        }
+      }
+    },
+    "responseOriginResp": {
+      "type": "object",
+      "properties": {
+        "origin": {
+          "$ref": "#/definitions/originsresponseOrigin"
         }
       }
     }

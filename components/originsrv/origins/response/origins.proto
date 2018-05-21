@@ -16,3 +16,7 @@ message Origins {
 message OriginResp {
     Origin origin = 1;
 }
+
+message OriginsResp {
+    Origins origins = 1;
+}
