@@ -6,13 +6,13 @@ import (
 	"log"
 
 	"github.com/golang-migrate/migrate"
-	"github.com/golang-migrate/migrate/database/postgres"
+	"github.com/golang-migrate/migrate/database/cockroachdb"
 	_ "github.com/golang-migrate/migrate/source/file"
 	_ "github.com/lib/pq"
 )
 
 func Migrate(db *sql.DB, migrations_dir string) {
-	driver, err := postgres.WithInstance(db, &postgres.Config{})
+	driver, err := cockroachdb.WithInstance(db, &cockroachdb.Config{})
 	if err != nil {
 		panic(err.Error())
 	}
@@ -23,8 +23,6 @@ func Migrate(db *sql.DB, migrations_dir string) {
 	if err != nil {
 		panic(err.Error())
 	}
-	err = m.Up()
-	if err != nil {
-		panic(err.Error())
-	}
+	// TED: better handling of errors here when you know more about Go Error handling
+	m.Up()
 }

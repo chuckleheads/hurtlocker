@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 
@@ -74,6 +73,5 @@ func ConfigFromViper() (*config.Config, error) {
 	if err := viper.Unmarshal(cfg); err != nil {
 		panic(err.Error())
 	}
-	log.Printf("CONFIG: %v", cfg)
 	return cfg, nil
 }
