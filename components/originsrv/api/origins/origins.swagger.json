@@ -43,7 +43,6 @@
     },
     "/origins/{name}": {
       "get": {
-        "summary": "rpc GetOrigins (originsrv.origins.request.GetOriginsReq) returns (originsrv.origins.response.OriginsResp) {\n    option (google.api.http).get = \"/origins\";\n};",
         "operationId": "GetOrigin",
         "responses": {
           "200": {
