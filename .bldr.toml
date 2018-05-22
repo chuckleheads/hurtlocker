@@ -1,0 +1,26 @@
+[sessionsrv]
+plan_path = "components/agent/habitat"
+paths = [
+  "components/agent/*",
+]
+
+[datastore]
+plan_path = "components/datastore/habitat"
+
+[originsrv]
+plan_path = "components/originsrv/habitat"
+paths = [
+  "components/originsrv/*",
+]
+
+[sessionsrv]
+plan_path = "components/sessionsrv/habitat"
+paths = [
+  "components/sessionsrv/*",
+]
+
+[tasker]
+plan_path = "components/tasker/habitat"
+paths = [
+  "components/tasker/*",
+]

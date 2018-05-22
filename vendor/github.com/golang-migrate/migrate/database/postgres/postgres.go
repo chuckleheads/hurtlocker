@@ -10,7 +10,6 @@ import (
 	nurl "net/url"
 
 	"context"
-
 	"github.com/golang-migrate/migrate"
 	"github.com/golang-migrate/migrate/database"
 	"github.com/lib/pq"
@@ -186,7 +185,7 @@ func (p *Postgres) SetVersion(version int, dirty bool) error {
 		return &database.Error{OrigErr: err, Err: "transaction start failed"}
 	}
 
-	query := `DELETE FROM "` + p.config.MigrationsTable + `"`
+	query := `TRUNCATE "` + p.config.MigrationsTable + `"`
 	if _, err := tx.Exec(query); err != nil {
 		tx.Rollback()
 		return &database.Error{OrigErr: err, Query: []byte(query)}

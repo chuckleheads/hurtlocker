@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/chuckleheads/hurtlocker/components/originsrv/data_store/functions"
 	"github.com/chuckleheads/hurtlocker/components/originsrv/origins/request"
 	"github.com/chuckleheads/hurtlocker/components/originsrv/origins/response"
 	_ "github.com/lib/pq"
@@ -22,9 +23,8 @@ func NewServer(db *sql.DB) *Server {
 
 func (srv *Server) CreateOrigin(ctx context.Context, req *request.CreateOriginReq) (*response.OriginResp, error) {
 	var id int64
-	// TED: This should be a postgres function, not inline code
 	err := srv.db.
-		QueryRow("INSERT INTO origins(name, default_package_visibility) VALUES($1, $2) RETURNING id", req.Name, req.DefaultPackageVisibility).
+		QueryRow(functions.InsertOriginV1, req.Name, req.DefaultPackageVisibility).
 		Scan(&id)
 
 	// TED: Handle other errors here like row conflicts
@@ -49,7 +49,7 @@ func (srv *Server) GetOrigin(ctx context.Context, req *request.GetOriginReq) (*r
 	var origin response.Origin
 
 	err := srv.db.
-		QueryRow("SELECT * FROM origins WHERE name = $1", req.Name).
+		QueryRow(functions.GetOriginByNameV1, req.Name).
 		Scan(&origin.Id, &origin.Name, &origin.DefaultPackageVisibility)
 
 	if err != nil && err != sql.ErrNoRows {
@@ -70,7 +70,7 @@ func (srv *Server) GetOrigin(ctx context.Context, req *request.GetOriginReq) (*r
 func (srv *Server) UpdateOrigin(ctx context.Context, req *request.UpdateOriginReq) (*response.OriginResp, error) {
 	var origin response.Origin
 	err := srv.db.
-		QueryRow("UPDATE origins SET default_package_visibility = $1 WHERE name = $2 RETURNING *", req.DefaultPackageVisibility, req.Name).
+		QueryRow(functions.UpdateOriginV1, req.DefaultPackageVisibility, req.Name).
 		Scan(&origin.Id, &origin.Name, &origin.DefaultPackageVisibility)
 
 	if err != nil {

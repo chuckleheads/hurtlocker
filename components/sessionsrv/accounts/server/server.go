@@ -6,6 +6,7 @@ import (
 
 	"github.com/chuckleheads/hurtlocker/components/sessionsrv/accounts/request"
 	"github.com/chuckleheads/hurtlocker/components/sessionsrv/accounts/response"
+	"github.com/chuckleheads/hurtlocker/components/sessionsrv/data_store/functions"
 	_ "github.com/lib/pq"
 
 	"google.golang.org/grpc"
@@ -24,7 +25,7 @@ func (srv *Server) CreateAccount(ctx context.Context, req *request.CreateAccount
 	var id int64
 	// JB: This should be a postgres function, not inline code
 	err := srv.db.
-		QueryRow("INSERT INTO accounts(username, email) VALUES($1, $2) RETURNING id", req.Username, req.Email).
+		QueryRow(functions.InsertAccountV1, req.Username, req.Email).
 		Scan(&id)
 
 	// JB: Handle other errors here like row conflicts
@@ -49,7 +50,7 @@ func (srv *Server) GetAccount(ctx context.Context, req *request.GetAccountReq) (
 	var account response.Account
 
 	err := srv.db.
-		QueryRow("SELECT * FROM accounts WHERE username = $1", req.Username).
+		QueryRow(functions.GetAccountByUsernameV1, req.Username).
 		Scan(&account.Id, &account.Username, &account.Email)
 
 	if err != nil && err != sql.ErrNoRows {
@@ -70,7 +71,7 @@ func (srv *Server) GetAccount(ctx context.Context, req *request.GetAccountReq) (
 func (srv *Server) UpdateAccount(ctx context.Context, req *request.UpdateAccountReq) (*response.AccountResp, error) {
 	var account response.Account
 	err := srv.db.
-		QueryRow("UPDATE accounts SET email = $1 WHERE username = $2 RETURNING *", req.Email, req.Username).
+		QueryRow(functions.UpdateAccountV1, req.Email, req.Username).
 		Scan(&account.Id, &account.Username, &account.Email)
 
 	if err != nil {
