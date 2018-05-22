@@ -4,10 +4,10 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/golang-migrate/migrate"
+	"github.com/golang-migrate/migrate/database/postgres"
+	_ "github.com/golang-migrate/migrate/source/file"
 	_ "github.com/lib/pq"
-	"github.com/mattes/migrate"
-	"github.com/mattes/migrate/database/postgres"
-	_ "github.com/mattes/migrate/source/file"
 )
 
 func Migrate(db *sql.DB, migrations_dir string) {

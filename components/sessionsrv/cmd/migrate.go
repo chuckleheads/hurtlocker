@@ -13,13 +13,12 @@ var migrateCmd = &cobra.Command{
 	Short: "Run the database migrations for sessionsrv",
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Printf("Running Migrations...")
-		dbConfig, err := DBConfigFromViper()
+		config, err := ConfigFromViper()
 		if err != nil {
 			panic(err.Error())
 		}
-		db := data_store.New(dbConfig)
-
-		migrations.Migrate(db, dbConfig.Migrations)
+		db := data_store.New(&config.Datastore)
+		migrations.Migrate(db, config.Datastore.Migrations)
 		log.Printf("Migrations complete")
 	},
 }

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -35,12 +36,12 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is /hab/svc/sessionsrv/config/config.toml)")
-	viper.SetDefault("host", "localhost")
-	viper.SetDefault("port", 26257)
-	viper.SetDefault("database", "sessionsrv")
-	viper.SetDefault("username", "root")
-	viper.SetDefault("password", "")
-	viper.SetDefault("ssl-mode", "disable")
+	viper.SetDefault("datastore.host", "localhost")
+	viper.SetDefault("datastore.port", 26257)
+	viper.SetDefault("datastore.database", "sessionsrv")
+	viper.SetDefault("datastore.username", "root")
+	viper.SetDefault("datastore.password", "")
+	viper.SetDefault("datastore.ssl-mode", "disable")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -51,7 +52,7 @@ func initConfig() {
 	} else {
 		home := filepath.Dir("/hab/svc/sessionsrv/config")
 
-		// Search config in home directory with name ".config" (without extension).
+		// Search config in home directory with name "config" (without extension).
 		viper.AddConfigPath(home)
 		viper.SetConfigName("config")
 	}
@@ -61,14 +62,18 @@ func initConfig() {
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
+	} else {
+		fmt.Printf("Err: %v", err)
 	}
+
 }
 
-// DBConfigFromViper fetches database config from viper
-func DBConfigFromViper() (*config.DBConfig, error) {
-	cfg := &config.DBConfig{}
+// ConfigFromViper fetches database config from viper
+func ConfigFromViper() (*config.Config, error) {
+	cfg := &config.Config{}
 	if err := viper.Unmarshal(cfg); err != nil {
 		panic(err.Error())
 	}
+	log.Printf("CONFIG: %v", cfg)
 	return cfg, nil
 }

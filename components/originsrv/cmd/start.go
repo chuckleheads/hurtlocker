@@ -50,11 +50,11 @@ func setup() {
 func runGRPC(lis net.Listener) {
 	server := grpc.NewServer()
 
-	dbConfig, err := DBConfigFromViper()
+	config, err := ConfigFromViper()
 	if err != nil {
 		panic(err.Error())
 	}
-	db := data_store.New(dbConfig)
+	db := data_store.New(&config.Datastore)
 	pbs.RegisterOriginsServer(server, srv.NewServer(db))
 	log.Printf("gRPC Listening on %s\n", lis.Addr().String())
 	server.Serve(lis)

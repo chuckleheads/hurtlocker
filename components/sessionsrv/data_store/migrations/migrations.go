@@ -3,11 +3,12 @@ package migrations
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
+	"github.com/golang-migrate/migrate"
+	"github.com/golang-migrate/migrate/database/postgres"
+	_ "github.com/golang-migrate/migrate/source/file"
 	_ "github.com/lib/pq"
-	"github.com/mattes/migrate"
-	"github.com/mattes/migrate/database/postgres"
-	_ "github.com/mattes/migrate/source/file"
 )
 
 func Migrate(db *sql.DB, migrations_dir string) {
@@ -15,8 +16,15 @@ func Migrate(db *sql.DB, migrations_dir string) {
 	if err != nil {
 		panic(err.Error())
 	}
+	log.Printf("file://%s", migrations_dir)
 	m, err := migrate.NewWithDatabaseInstance(
 		fmt.Sprintf("file://%s", migrations_dir),
 		"postgres", driver)
-	m.Up()
+	if err != nil {
+		panic(err.Error())
+	}
+	err = m.Up()
+	if err != nil {
+		panic(err.Error())
+	}
 }

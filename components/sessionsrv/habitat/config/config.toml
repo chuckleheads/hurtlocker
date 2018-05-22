@@ -1,9 +1,9 @@
 [datastore]
 database = "{{cfg.datastore.database}}"
-{{#eachAlive bind.database.members as |member| ~}}
+{{#eachAlive bind.datastore.members as |member| ~}}
 {{#if @first ~}}
-host = "member.sys.ip"
-port = "member.cfg.port"
+host = "{{member.sys.ip}}"
+port = {{member.cfg.port}}
 {{/if ~}}
 {{/eachAlive ~}}
-migrations = {{pkg.path}}/migrations
+migrations = "{{pkg.path}}/migrations"
