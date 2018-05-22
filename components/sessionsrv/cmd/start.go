@@ -10,6 +10,7 @@ import (
 	pb "github.com/chuckleheads/hurtlocker/components/sessionsrv/accounts"
 	srv "github.com/chuckleheads/hurtlocker/components/sessionsrv/accounts/server"
 	pba "github.com/chuckleheads/hurtlocker/components/sessionsrv/api/accounts"
+	"github.com/chuckleheads/hurtlocker/components/sessionsrv/config"
 	"github.com/chuckleheads/hurtlocker/components/sessionsrv/data_store"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
@@ -30,7 +31,11 @@ func init() {
 }
 
 func setup() {
-	addr := ":8001"
+	config, err := ConfigFromViper()
+	if err != nil {
+		panic(err.Error())
+	}
+	addr := fmt.Sprintf(":%d", config.Port)
 	clientAddr := fmt.Sprintf("localhost%s", addr)
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
@@ -38,17 +43,12 @@ func setup() {
 	}
 	defer lis.Close()
 
-	go runGRPC(lis)
-	runHTTP(clientAddr)
+	go runGRPC(config, lis)
+	runHTTP(config, clientAddr)
 }
 
-func runGRPC(lis net.Listener) {
+func runGRPC(config *config.Config, lis net.Listener) {
 	server := grpc.NewServer()
-
-	config, err := ConfigFromViper()
-	if err != nil {
-		panic(err.Error())
-	}
 	db := data_store.New(&config.Datastore)
 	pb.RegisterAccountsServer(server, srv.NewServer(db))
 
@@ -56,8 +56,8 @@ func runGRPC(lis net.Listener) {
 	server.Serve(lis)
 }
 
-func runHTTP(clientAddr string) {
-	addr := ":8002"
+func runHTTP(config *config.Config, clientAddr string) {
+	addr := fmt.Sprintf(":%d", config.HttpPort)
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	mux := runtime.NewServeMux()
 

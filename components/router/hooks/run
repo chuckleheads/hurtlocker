@@ -1,0 +1,5 @@
+#!/bin/sh
+
+exec 2>&1
+
+exec envoy -c "{{pkg.svc_config_path}}/grpc-bridge.yaml"

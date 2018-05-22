@@ -35,6 +35,8 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is /hab/svc/sessionsrv/config/config.toml)")
+	viper.SetDefault("port", 8001)
+	viper.SetDefault("http_port", 8002)
 	viper.SetDefault("datastore.host", "localhost")
 	viper.SetDefault("datastore.port", 26257)
 	viper.SetDefault("datastore.database", "sessionsrv")

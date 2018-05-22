@@ -12,3 +12,8 @@ pkg_deps=(core/cockroach)
 pkg_binds=(
   [datastore]="port"
 )
+pkg_exports=(
+  [port]=port
+  [http_port]=http_port
+)
+pkg_exposes=(port http_port)
