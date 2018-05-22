@@ -9,7 +9,6 @@ pkg_maintainer="The Habitat Maintainers <humans@habitat.sh>"
 pkg_bin_dirs=(bin)
 pkg_build_deps=(core/go core/git core/dep)
 pkg_deps=(core/cockroach)
-pkg_svc_run="${pkg_name} start"
 pkg_binds=(
   [datastore]="port"
 )

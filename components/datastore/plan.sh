@@ -6,6 +6,10 @@ pkg_upstream_url="https://github.com/chuckleheads/hurtlocker"
 pkg_license=('Apache-2.0')
 pkg_maintainer="The Habitat Maintainers <humans@habitat.sh>"
 pkg_deps=(core/cockroach)
+pkg_exports=(
+  [port]=port
+)
+pkg_exposes=(port)
 
 do_build() {
   return 0

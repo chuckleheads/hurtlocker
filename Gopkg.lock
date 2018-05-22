@@ -14,6 +14,18 @@
   version = "v1.0.3"
 
 [[projects]]
+  name = "github.com/golang-migrate/migrate"
+  packages = [
+    ".",
+    "database",
+    "database/postgres",
+    "source",
+    "source/file"
+  ]
+  revision = "22f249514de9aa3f8a720a7cabbdd45d294f83a1"
+  version = "v3.2.0"
+
+[[projects]]
   name = "github.com/golang/protobuf"
   packages = [
     "jsonpb",
@@ -75,18 +87,6 @@
   packages = ["."]
   revision = "c3beff4c2358b44d0493c7dda585e7db7ff28ae6"
   version = "v1.7.6"
-
-[[projects]]
-  name = "github.com/mattes/migrate"
-  packages = [
-    ".",
-    "database",
-    "database/postgres",
-    "source",
-    "source/file"
-  ]
-  revision = "035c07716cd373d88456ec4d701402df52584cb4"
-  version = "v3.0.1"
 
 [[projects]]
   branch = "master"
@@ -235,6 +235,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "d84f80feab251237f5844197a64d646c2117ba806b682ca2c4cff103f500d8c7"
+  inputs-digest = "8bb5a3e02be1bb2288c9cd4fd18c53b849d9ae38b11887261e69106d8540173b"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -49,6 +49,14 @@ start-hurtlocker() {
   start-sessionsrv
 }
 
+stop-hurtlocker() {
+  stop-rabbitmq
+  stop-datastore
+  stop-originsrv
+  stop-agent
+  stop-sessionsrv
+}
+
 start-rabbitmq() {
   hab svc load core/rabbitmq
 }

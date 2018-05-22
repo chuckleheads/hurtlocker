@@ -40,12 +40,12 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is /hab/svc/originsrv/config/config.toml)")
-	viper.SetDefault("host", "localhost")
-	viper.SetDefault("port", 26257)
-	viper.SetDefault("database", "originsrv")
-	viper.SetDefault("username", "root")
-	viper.SetDefault("password", "")
-	viper.SetDefault("ssl-mode", "disable")
+	viper.SetDefault("datastore.host", "localhost")
+	viper.SetDefault("datastore.port", 26257)
+	viper.SetDefault("datastore.database", "originsrv")
+	viper.SetDefault("datastore.username", "root")
+	viper.SetDefault("datastore.password", "")
+	viper.SetDefault("datastore.ssl-mode", "disable")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -69,9 +69,9 @@ func initConfig() {
 	}
 }
 
-// DBConfigFromViper fetches database config from viper
-func DBConfigFromViper() (*config.DBConfig, error) {
-	cfg := &config.DBConfig{}
+// ConfigFromViper fetches database config from viper
+func ConfigFromViper() (*config.Config, error) {
+	cfg := &config.Config{}
 	if err := viper.Unmarshal(cfg); err != nil {
 		panic(err.Error())
 	}
