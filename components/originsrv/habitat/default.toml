@@ -1,2 +1,5 @@
+port = 7001
+http_port = 7002
+
 [datastore]
 database = "originsrv"

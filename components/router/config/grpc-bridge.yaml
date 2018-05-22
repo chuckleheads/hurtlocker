@@ -1,0 +1,73 @@
+admin:
+  access_log_path: "{{pkg.svc_var_path}}/admin_access.log"
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 9901
+static_resources:
+  listeners:
+  - address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 9211
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          codec_type: auto
+          stat_prefix: ingress_http
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: local_service
+              domains:
+              - "*"
+              routes:
+              {{~#if bind.originsrv}}
+              - match:
+                  prefix: "/originsrv"
+                  headers:
+                  - name: content-type
+                    value: application/grpc
+                route:
+                  cluster: originsrv
+              {{~/if}}
+              {{~#if bind.sessionsrv}}
+              - match:
+                  prefix: "/sessionsrv"
+                  headers:
+                  - name: content-type
+                    value: application/grpc
+                route:
+                  cluster: sessionsrv
+              {{~/if}}
+          http_filters:
+          - name: envoy.router
+            config: {}
+  clusters:
+  {{~#if bind.originsrv}}
+  - name: originsrv
+    connect_timeout: 0.250s
+    type: static
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    hosts:
+    {{~#eachAlive bind.originsrv.members as |member|}}
+    - socket_address:
+        address: {{member.sys.ip}}
+        port_value: {{member.cfg.port}}
+    {{~/eachAlive}}
+  {{~/if}}
+  {{~#if bind.sessionsrv}}
+  - name: sessionsrv
+    connect_timeout: 0.250s
+    type: static
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    hosts:
+    {{~#eachAlive bind.sessionsrv.members as |member|}}
+    - socket_address:
+        address: {{member.sys.ip}}
+        port_value: {{member.cfg.port}}
+    {{~/eachAlive}}
+  {{~/if}}

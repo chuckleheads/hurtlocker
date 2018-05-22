@@ -1,2 +1,5 @@
+port = 8001
+http_port = 8002
+
 [datastore]
 database = "sessionsrv"

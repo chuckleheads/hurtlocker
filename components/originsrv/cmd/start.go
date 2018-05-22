@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	pba "github.com/chuckleheads/hurtlocker/components/originsrv/api/origins"
+	"github.com/chuckleheads/hurtlocker/components/originsrv/config"
 	"github.com/chuckleheads/hurtlocker/components/originsrv/data_store"
 	pbs "github.com/chuckleheads/hurtlocker/components/originsrv/origins"
 	srv "github.com/chuckleheads/hurtlocker/components/originsrv/origins/server"
@@ -35,7 +36,11 @@ func init() {
 }
 
 func setup() {
-	addr := ":7001"
+	config, err := ConfigFromViper()
+	if err != nil {
+		panic(err.Error())
+	}
+	addr := fmt.Sprintf(":%d", config.Port)
 	clientAddr := fmt.Sprintf("localhost%s", addr)
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
@@ -43,25 +48,20 @@ func setup() {
 	}
 	defer lis.Close()
 
-	go runGRPC(lis)
-	runHTTP(clientAddr)
+	go runGRPC(config, lis)
+	runHTTP(config, clientAddr)
 }
 
-func runGRPC(lis net.Listener) {
+func runGRPC(config *config.Config, lis net.Listener) {
 	server := grpc.NewServer()
-
-	config, err := ConfigFromViper()
-	if err != nil {
-		panic(err.Error())
-	}
 	db := data_store.New(&config.Datastore)
 	pbs.RegisterOriginsServer(server, srv.NewServer(db))
 	log.Printf("gRPC Listening on %s\n", lis.Addr().String())
 	server.Serve(lis)
 }
 
-func runHTTP(clientAddr string) {
-	addr := ":7002"
+func runHTTP(config *config.Config, clientAddr string) {
+	addr := fmt.Sprintf(":%d", config.HttpPort)
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	mux := runtime.NewServeMux()
 
