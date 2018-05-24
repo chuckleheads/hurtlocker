@@ -45,8 +45,10 @@ start-hurtlocker() {
   start-rabbitmq
   start-datastore
   start-originsrv
+  start-logsrv
   start-agent
   start-sessionsrv
+  sleep 10
   start-router
 }
 
@@ -54,6 +56,7 @@ stop-hurtlocker() {
   stop-rabbitmq
   stop-datastore
   stop-originsrv
+  stop-logsrv
   stop-agent
   stop-sessionsrv
   stop-router
@@ -100,11 +103,22 @@ stop-agent() {
 }
 
 start-router() {
-  hab svc load chuckleheads/router --bind originsrv:originsrv.default --bind sessionsrv:sessionsrv.default
+  hab svc load chuckleheads/router \
+    --bind originsrv:originsrv.default \
+    --bind sessionsrv:sessionsrv.default \
+    --bind logsrv:logsrv.default
 }
 
 stop-router() {
   hab svc unload chuckleheads/router
+}
+
+start-logsrv() {
+  hab svc load chuckleheads/logsrv
+}
+
+stop-logsrv() {
+  hab svc unload chuckleheads/logsrv
 }
 
 _build-component() {
@@ -127,6 +141,7 @@ _build-hurtlocker() {
     build-component originsrv
     build-component agent
     build-component sessionsrv
+    build-component logsrv
     return $?
   fi
 }

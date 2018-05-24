@@ -13,6 +13,7 @@ pkg_svc_group="root"
 pkg_binds_optional=(
   [originsrv]="port"
   [sessionsrv]="port"
+  [logsrv]="port"
 )
 # pkg_exports=(
 #   [port]=port

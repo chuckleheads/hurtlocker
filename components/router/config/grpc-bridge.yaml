@@ -23,51 +23,35 @@ static_resources:
               domains:
               - "*"
               routes:
-              {{~#if bind.originsrv}}
               - match:
-                  prefix: "/originsrv"
+                  prefix: "/"
                   headers:
                   - name: content-type
                     value: application/grpc
                 route:
-                  cluster: originsrv
-              {{~/if}}
-              {{~#if bind.sessionsrv}}
-              - match:
-                  prefix: "/sessionsrv"
-                  headers:
-                  - name: content-type
-                    value: application/grpc
-                route:
-                  cluster: sessionsrv
-              {{~/if}}
+                  cluster: services
           http_filters:
           - name: envoy.router
             config: {}
   clusters:
-  {{~#if bind.originsrv}}
-  - name: originsrv
+  - name: services
     connect_timeout: 0.250s
     type: static
     lb_policy: round_robin
     http2_protocol_options: {}
     hosts:
+    {{~#eachAlive bind.logsrv.members as |member|}}
+    - socket_address:
+        address: {{member.sys.ip}}
+        port_value: {{member.cfg.port}}
+    {{~/eachAlive}}
     {{~#eachAlive bind.originsrv.members as |member|}}
     - socket_address:
         address: {{member.sys.ip}}
         port_value: {{member.cfg.port}}
     {{~/eachAlive}}
-  {{~/if}}
-  {{~#if bind.sessionsrv}}
-  - name: sessionsrv
-    connect_timeout: 0.250s
-    type: static
-    lb_policy: round_robin
-    http2_protocol_options: {}
-    hosts:
     {{~#eachAlive bind.sessionsrv.members as |member|}}
     - socket_address:
         address: {{member.sys.ip}}
         port_value: {{member.cfg.port}}
     {{~/eachAlive}}
-  {{~/if}}
