@@ -8,3 +8,5 @@ protobufs:
 	components/originsrv/scripts/grpc.sh
 	components/agent/scripts/grpc.sh
 	components/sessionsrv/scripts/grpc.sh
+	components/logsrv/scripts/grpc.sh
+

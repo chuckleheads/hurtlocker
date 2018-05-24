@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package hurtlocker.logsrv.logrecv.response;
+option go_package = "github.com/chuckleheads/hurtlocker/components/logsrv/logrecv/response";
+
+message LogSummary {
+    bool status = 1;
+}

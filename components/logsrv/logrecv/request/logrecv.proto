@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package hurtlocker.logsrv.logrecv.request;
+option go_package = "github.com/chuckleheads/hurtlocker/components/logsrv/logrecv/request";
+
+message LogLine {
+    string stdout_line = 1;
+    string stderr_line = 2;
+}

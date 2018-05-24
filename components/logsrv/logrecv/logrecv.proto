@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package hurtlocker.logsrv.logrecv;
+option go_package = "github.com/chuckleheads/hurtlocker/components/logsrv/logrecv";
+
+import "components/logsrv/logrecv/request/logrecv.proto";
+import "components/logsrv/logrecv/response/logrecv.proto";
+
+service LogRecv {
+    rpc ReceiveLogs (stream logsrv.logrecv.request.LogLine) returns (logsrv.logrecv.response.LogSummary);
+}
