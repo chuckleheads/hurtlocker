@@ -25,7 +25,6 @@
     ".",
     "database",
     "database/cockroachdb",
-    "database/postgres",
     "source",
     "source/file"
   ]
@@ -242,6 +241,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e86e5254e76a0bd5f3b4bb9db6edfbefe7a346b1f2d8aff93711fc7d00c0779a"
+  inputs-digest = "48f0875eaa2522f3890f521a1ee0f514af2458e01aa6d83ccf21fce30a812cf1"
   solver-name = "gps-cdcl"
   solver-version = 1
