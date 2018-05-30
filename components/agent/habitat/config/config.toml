@@ -1,8 +1,8 @@
 [rabbitmq]
 {{#eachAlive bind.rabbitmq.members as |member| ~}}
 {{#if @first ~}}
-host = "member.sys.ip"
-port = "member.cfg.port"
+host = "{{member.sys.ip}}"
+port = "{{member.cfg.port}}"
 {{/if ~}}
 {{/eachAlive ~}}
 {{toToml cfg.rabbitmq}}

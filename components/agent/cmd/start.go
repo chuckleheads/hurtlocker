@@ -14,8 +14,9 @@ var startCmd = &cobra.Command{
 	Use:   "start",
 	Short: "Start Builder Agent",
 	Run: func(cmd *cobra.Command, args []string) {
-		config, err := RabbitMQConfigFromViper()
-		conn, err := amqp.Dial(fmt.Sprintf("amqp://%s:%s@%s:%d/", config.Username, config.Password, config.Host, config.Port))
+		config, err := ConfigFromViper()
+		rmqConfig := config.RabbitMQ
+		conn, err := amqp.Dial(fmt.Sprintf("amqp://%s:%s@%s:%d/", rmqConfig.Username, rmqConfig.Password, rmqConfig.Host, rmqConfig.Port))
 		failOnError(err, "Failed to connect to RabbitMQ")
 		defer conn.Close()
 		ch, err := conn.Channel()
@@ -23,13 +24,13 @@ var startCmd = &cobra.Command{
 		defer ch.Close()
 
 		err = ch.ExchangeDeclare(
-			config.Exchange, // name
-			"topic",         // type
-			true,            // durable
-			false,           // auto-deleted
-			false,           // internal
-			false,           // no-wait
-			nil,             // arguments
+			rmqConfig.Exchange, // name
+			"topic",            // type
+			true,               // durable
+			false,              // auto-deleted
+			false,              // internal
+			false,              // no-wait
+			nil,                // arguments
 		)
 		failOnError(err, "Failed to declare an exchange")
 
@@ -43,13 +44,13 @@ var startCmd = &cobra.Command{
 		)
 		failOnError(err, "Failed to declare a queue")
 
-		for _, s := range config.Topic {
+		for _, s := range rmqConfig.Topic {
 			log.Printf("Binding queue %s to exchange %s with routing key %s",
-				q.Name, config.Exchange, s)
+				q.Name, rmqConfig.Exchange, s)
 			err = ch.QueueBind(
-				q.Name,          // queue name
-				s,               // routing key
-				config.Exchange, // exchange
+				q.Name,             // queue name
+				s,                  // routing key
+				rmqConfig.Exchange, // exchange
 				false,
 				nil)
 			failOnError(err, "Failed to bind a queue")
