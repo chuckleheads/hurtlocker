@@ -80,7 +80,7 @@ func init() {
 
 func logsrvClient() pb.LogRecvClient {
 	var opts []grpc.DialOption
-	opts = append(opts, grpc.WithInsecure())
+	opts = append(opts, grpc.WithInsecure(), grpc.WithAuthority("logsrv"))
 	conn, err := grpc.Dial(":9211", opts...)
 	if err != nil {
 		panic(err.Error())

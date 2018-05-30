@@ -14,6 +14,10 @@ static_resources:
     - filters:
       - name: envoy.http_connection_manager
         config:
+          access_log:
+          - name: envoy.file_access_log
+            config:
+              path: "/dev/stdout"
           codec_type: auto
           stat_prefix: ingress_http
           route_config:
@@ -23,18 +27,45 @@ static_resources:
               domains:
               - "*"
               routes:
+              {{~#if bind.logsrv}}
               - match:
                   prefix: "/"
                   headers:
                   - name: content-type
                     value: application/grpc
+                  - name: :authority
+                    value: logsrv
                 route:
-                  cluster: services
+                  cluster: logsrv
+              {{~/if}}
+              {{~#if bind.originsrv}}
+              - match:
+                  prefix: "/"
+                  headers:
+                  - name: content-type
+                    value: application/grpc
+                  - name: :authority
+                    value: originsrv
+                route:
+                  cluster: originsrv
+              {{~/if}}
+              {{~#if bind.sessionsrv}}
+              - match:
+                  prefix: "/"
+                  headers:
+                  - name: content-type
+                    value: application/grpc
+                  - name: :authority
+                    value: sessionsrv
+                route:
+                  cluster: sessionsrv
+              {{~/if}}
           http_filters:
           - name: envoy.router
             config: {}
   clusters:
-  - name: services
+  {{~#if bind.logsrv}}
+  - name: logsrv
     connect_timeout: 0.250s
     type: static
     lb_policy: round_robin
@@ -45,13 +76,30 @@ static_resources:
         address: {{member.sys.ip}}
         port_value: {{member.cfg.port}}
     {{~/eachAlive}}
+  {{~/if}}
+  {{~#if bind.originsrv}}
+  - name: originsrv
+    connect_timeout: 0.250s
+    type: static
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    hosts:
     {{~#eachAlive bind.originsrv.members as |member|}}
     - socket_address:
         address: {{member.sys.ip}}
         port_value: {{member.cfg.port}}
     {{~/eachAlive}}
+  {{~/if}}
+  {{~#if bind.sessionsrv}}
+  - name: sessionsrv
+    connect_timeout: 0.250s
+    type: static
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    hosts:
     {{~#eachAlive bind.sessionsrv.members as |member|}}
     - socket_address:
         address: {{member.sys.ip}}
         port_value: {{member.cfg.port}}
     {{~/eachAlive}}
+  {{~/if}}
