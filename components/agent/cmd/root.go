@@ -34,13 +34,13 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is /hab/svc/agent/config/config.toml)")
-	viper.SetDefault("host", "localhost")
-	viper.SetDefault("port", 5672)
-	viper.SetDefault("username", "guest")
-	viper.SetDefault("password", "guest")
-	viper.SetDefault("exchange", "work")
+	viper.SetDefault("rabbitmq.host", "localhost")
+	viper.SetDefault("rabbitmq.port", 5672)
+	viper.SetDefault("rabbitmq.username", "guest")
+	viper.SetDefault("rabbitmq.password", "guest")
+	viper.SetDefault("rabbitmq.exchange", "work")
 	// Listen for all topics by default
-	viper.SetDefault("topic", [1]string{"#"})
+	viper.SetDefault("rabbitmq.topic", [1]string{"#"})
 
 }
 
@@ -65,9 +65,9 @@ func initConfig() {
 	}
 }
 
-// RabbitMQConfigFromViper fetches database config from viper
-func RabbitMQConfigFromViper() (*config.RabbitMQConfig, error) {
-	cfg := &config.RabbitMQConfig{}
+// ConfigFromViper fetches database config from viper
+func ConfigFromViper() (*config.Config, error) {
+	cfg := &config.Config{}
 	if err := viper.Unmarshal(cfg); err != nil {
 		panic(err.Error())
 	}

@@ -29,8 +29,9 @@ var testPublishCmd = &cobra.Command{
 	Use:   "testPublish",
 	Short: "A command to test publishing to our builder agent",
 	Run: func(cmd *cobra.Command, args []string) {
-		config, err := RabbitMQConfigFromViper()
-		connString := fmt.Sprintf("amqp://%s:%s@%s:%d/", config.Username, config.Password, config.Host, config.Port)
+		config, err := ConfigFromViper()
+		rmqConfig := config.RabbitMQ
+		connString := fmt.Sprintf("amqp://%s:%s@%s:%d/", rmqConfig.Username, rmqConfig.Password, rmqConfig.Host, rmqConfig.Port)
 		fmt.Printf(connString)
 		conn, err := amqp.Dial(connString)
 		failOnError(err, "Failed to connect to RabbitMQ")
@@ -41,13 +42,13 @@ var testPublishCmd = &cobra.Command{
 		defer ch.Close()
 
 		err = ch.ExchangeDeclare(
-			config.Exchange, // name
-			"topic",         // type
-			true,            // durable
-			false,           // auto-deleted
-			false,           // internal
-			false,           // no-wait
-			nil,             // arguments
+			rmqConfig.Exchange, // name
+			"topic",            // type
+			true,               // durable
+			false,              // auto-deleted
+			false,              // internal
+			false,              // no-wait
+			nil,                // arguments
 		)
 		failOnError(err, "Failed to declare an exchange")
 
@@ -60,10 +61,10 @@ var testPublishCmd = &cobra.Command{
 			log.Fatalln("Failed to encode address book:", err)
 		}
 		err = ch.Publish(
-			config.Exchange, // exchange
-			"build",         // routing key
-			false,           // mandatory
-			false,           // immediate
+			rmqConfig.Exchange, // exchange
+			"build",            // routing key
+			false,              // mandatory
+			false,              // immediate
 			amqp.Publishing{
 				ContentType: "text/plain",
 				Body:        []byte(body),
