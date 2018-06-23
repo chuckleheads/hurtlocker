@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package hurtlocker.originsrv.origins.response;
+option go_package = "github.com/chuckleheads/hurtlocker/components/originsrv/origins/response";
+
+message Origin {
+    int64 id = 1;
+    string name = 2;
+    string default_package_visibility = 3;
+}
+
+message Origins {
+    repeated Origin origins = 1;
+}
+
+message OriginResp {
+    Origin origin = 1;
+}
+
+message OriginsResp {
+    Origins origins = 1;
+}

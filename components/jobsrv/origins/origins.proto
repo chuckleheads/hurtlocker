@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package hurtlocker.originsrv.origins;
+option go_package = "github.com/chuckleheads/hurtlocker/components/originsrv/origins";
+
+import "components/originsrv/origins/request/origins.proto";
+import "components/originsrv/origins/response/origins.proto";
+
+service Origins {
+    rpc GetOrigin (origins.request.GetOriginReq) returns (origins.response.OriginResp);
+    rpc CreateOrigin (origins.request.CreateOriginReq) returns (origins.response.OriginResp);
+    rpc UpdateOrigin (origins.request.UpdateOriginReq) returns (origins.response.OriginResp);
+}

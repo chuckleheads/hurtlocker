@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package hurtlocker.jobsrv.jobs;
+option go_package = "github.com/chuckleheads/hurtlocker/components/jobsrv/api/jobs";
+
+import "google/api/annotations.proto";
+
+import "components/jobsrv/jobs/request/jobs.proto";
+import "components/jobsrv/jobs/response/jobs.proto";
+
+service Jobs {
+    rpc GetJob (jobsrv.jobs.request.GetJobReq) returns (jobsrv.jobs.response.JobResp) {
+        option (google.api.http).get = "/jobs/{id}";
+    };
+    rpc CreateJob (jobsrv.jobs.request.CreateJobReq) returns (jobsrv.jobs.response.JobResp) {
+        option (google.api.http) = {
+            post: "/jobs"
+            body: "*"
+        };
+    };
+    rpc GetJobLogs (jobsrv.jobs.request.GetJobLogs) returns (jobsrv.jobs.response.LogsResp) {
+        option (google.api.http).get = "/jobs/{id}/logs";
+    };
+}
