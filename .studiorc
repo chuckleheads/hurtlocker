@@ -3,15 +3,6 @@
 RED='\033[0;31m'
 NO_COLOR='\033[0m'
 
-declare -A svc_params=(
-  [agent]="      --bind rabbitmq:rabbitmq.default"
-  [datastore]=""
-  [logsrv]=""
-  [originsrv]="  --bind datastore:datastore.default"
-  [router]="     --bind originsrv:originsrv.default --bind sessionsrv:sessionsrv.default --bind logsrv:logsrv.default"
-  [sessionsrv]=" --bind datastore:datastore.default"
-)
-
 stop-on-failure() {
   (set -e; "$@");
   rv=$?
@@ -19,10 +10,6 @@ stop-on-failure() {
     echo -e "${RED}ERROR: $* aborted due to error${NO_COLOR}"
     return 1
   fi
-}
-
-command-exists() {
-  command -V "$1" > /dev/null 2>&1
 }
 
 configure() {
@@ -54,78 +41,93 @@ _cleanup() {
   fi
 }
 
-_load-if-not-loaded() {
-  local pkg_ident
-  pkg_ident=$1
-
-  if hab sup status "$pkg_ident" > /dev/null; then
-    echo "$pkg_ident is already loaded"
-  else
-    hab svc load "$@"
-  fi
+start-hurtlocker() {
+  start-rabbitmq
+  start-datastore
+  start-originsrv
+  start-logsrv
+  start-agent
+  start-sessionsrv
+  sleep 10
+  start-router
 }
-load-if-not-loaded() { stop-on-failure _load-if-not-loaded "$@"; }
 
-_start-hurtlocker() {
-  if [[ "$#" -eq 0 ]]; then
-    start-hurtlocker agent
-    start-hurtlocker datastore
-    start-hurtlocker logsrv
-    start-hurtlocker originsrv
-    start-hurtlocker rabbitmq
-    start-hurtlocker sessionsrv
-    sleep 10
-    start-hurtlocker router
-    return $?
-  fi
-
-  for component in "$@"; do
-    if [ -v "svc_params[$component]" ]; then
-      load-if-not-loaded chuckleheads/$component ${svc_params[$component]}
-    elif command-exists "start-$component"; then
-      "start-$component"
-    else
-      echo -e "${RED}ERROR: Unknown hurtlocker service: $component${NO_COLOR}"
-      return 1
-    fi
-  done
+stop-hurtlocker() {
+  stop-rabbitmq
+  stop-datastore
+  stop-originsrv
+  stop-logsrv
+  stop-agent
+  stop-sessionsrv
+  stop-router
 }
-start-hurtlocker() { stop-on-failure _start-hurtlocker "$@"; }
-
-_stop-hurtlocker() {
-  if [[ "$#" -eq 0 ]]; then
-    stop-hurtlocker rabbitmq datastore originsrv agent sessionsrv logsrv router
-    return $?
-  fi
-
-  for component in "$@"; do
-    if command-exists "stop-$component"; then
-      "stop-$component"
-    else
-      hab svc unload chuckleheads/$component
-    fi
-  done
-}
-stop-hurtlocker() { stop-on-failure _stop-hurtlocker "$@"; }
 
 start-rabbitmq() {
-  load-if-not-loaded core/rabbitmq
+  hab svc load core/rabbitmq
 }
 
 stop-rabbitmq() {
   hab svc unload core/rabbitmq
 }
 
+start-datastore() {
+  hab svc load chuckleheads/datastore
+}
+
+stop-datastore() {
+  hab svc unload chuckleheads/datastore
+}
+
+start-originsrv() {
+  hab svc load chuckleheads/originsrv --bind datastore:datastore.default
+}
+
+stop-originsrv() {
+  hab svc unload chuckleheads/originsrv
+}
+
+start-sessionsrv() {
+  hab svc load chuckleheads/sessionsrv --bind datastore:datastore.default
+}
+
+stop-sessionsrv() {
+  hab svc unload chuckleheads/sessionsrv
+}
+
+start-agent() {
+    hab svc load chuckleheads/agent --bind rabbitmq:rabbitmq.default
+}
+
+stop-agent() {
+    hab svc unload chuckleheads/agent
+}
+
+start-router() {
+  hab svc load chuckleheads/router \
+    --bind originsrv:originsrv.default \
+    --bind sessionsrv:sessionsrv.default \
+    --bind logsrv:logsrv.default
+}
+
+stop-router() {
+  hab svc unload chuckleheads/router
+}
+
+start-logsrv() {
+  hab svc load chuckleheads/logsrv
+}
+
+stop-logsrv() {
+  hab svc unload chuckleheads/logsrv
+}
+
 _build-component() {
-  local component="$1"
+  stop-$1
+  NO_INSTALL_DEPS=$(no_install_deps "$1") \
+    build "/src/components/$1/habitat-dev"
 
-  stop-hurtlocker "$component"
-
-  NO_INSTALL_DEPS=$(no_install_deps "$component") \
-    build "/src/components/$component/habitat-dev"
-
-  echo "$component build succeeded"
-  start-hurtlocker "$component"
+  echo "$1 build succeeded"
+  start-$1
 }
 build-component() { stop-on-failure _build-component "$1"; }
 
@@ -136,13 +138,12 @@ _build-hurtlocker() {
   fi
 
   if [[ "$#" -eq 0 ]]; then
-    build-hurtlocker rabbitmq datastore originsrv logsrv agent sessionsrv router
+    build-component originsrv
+    build-component agent
+    build-component sessionsrv
+    build-component logsrv
     return $?
   fi
-
-  for component in "$@"; do
-    build-component "$component"
-  done
 }
 build-hurtlocker() { stop-on-failure _build-hurtlocker; }
 
