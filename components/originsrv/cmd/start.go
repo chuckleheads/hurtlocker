@@ -10,7 +10,6 @@ import (
 	pba "github.com/chuckleheads/hurtlocker/components/originsrv/api/origins"
 	"github.com/chuckleheads/hurtlocker/components/originsrv/config"
 	"github.com/chuckleheads/hurtlocker/components/originsrv/data_store"
-	pbs "github.com/chuckleheads/hurtlocker/components/originsrv/origins"
 	srv "github.com/chuckleheads/hurtlocker/components/originsrv/origins/server"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
@@ -55,7 +54,7 @@ func setup() {
 func runGRPC(config *config.Config, lis net.Listener) {
 	server := grpc.NewServer()
 	db := data_store.New(&config.Datastore)
-	pbs.RegisterOriginsServer(server, srv.NewServer(db))
+	pba.RegisterOriginsServer(server, srv.NewServer(db))
 	log.Printf("gRPC Listening on %s\n", lis.Addr().String())
 	server.Serve(lis)
 }

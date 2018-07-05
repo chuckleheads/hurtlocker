@@ -97,7 +97,7 @@
     }
   },
   "definitions": {
-    "originsresponseOrigin": {
+    "originsOrigin": {
       "type": "object",
       "properties": {
         "id": {
@@ -138,7 +138,7 @@
       "type": "object",
       "properties": {
         "origin": {
-          "$ref": "#/definitions/originsresponseOrigin"
+          "$ref": "#/definitions/originsOrigin"
         }
       }
     }
