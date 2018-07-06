@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package hurtlocker.originsrv.projects;
+option go_package = "github.com/chuckleheads/hurtlocker/components/originsrv/projects";
+
+// JB TODO add default visibility to this
+message Project {
+    int64 id = 1;
+		string origin = 2;
+		string package_name = 3;
+		string plan_path = 4;
+		string vcs_type = 5;
+		string vcs_data = 6;
+}

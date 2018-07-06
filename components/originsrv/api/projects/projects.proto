@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package hurtlocker.originsrv.projects;
+option go_package = "github.com/chuckleheads/hurtlocker/components/originsrv/api/projects";
+
+import "google/api/annotations.proto";
+
+import "components/originsrv/projects/request/projects.proto";
+import "components/originsrv/projects/response/projects.proto";
+
+service Projects {
+    rpc GetProject (originsrv.projects.request.GetProjectReq) returns (originsrv.projects.response.ProjectResp) {
+        option (google.api.http).get = "/projects/{origin}/{package_name}";
+    };
+    rpc CreateProject (originsrv.projects.request.CreateProjectReq) returns (originsrv.projects.response.ProjectResp) {
+        option (google.api.http) = {
+            post: "/projects"
+            body: "*"
+        };
+    };
+    rpc UpdateProject (originsrv.projects.request.UpdateProjectReq) returns (originsrv.projects.response.ProjectResp) {
+        option (google.api.http) = {
+            patch: "/origins/{project.origin}/{project.package_name}"
+            body: "*"
+        };
+    };
+}
+

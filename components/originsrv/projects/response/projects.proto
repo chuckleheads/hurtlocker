@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package hurtlocker.originsrv.projects.response;
+option go_package = "github.com/chuckleheads/hurtlocker/components/originsrv/projects/response";
+
+import "components/originsrv/projects/projects.proto";
+
+message ProjectResp {
+	projects.Project project = 1;
+}

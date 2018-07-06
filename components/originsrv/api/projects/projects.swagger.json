@@ -1,0 +1,164 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "components/originsrv/api/projects/projects.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/origins/{project.origin}/{project.package_name}": {
+      "patch": {
+        "operationId": "UpdateProject",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/responseProjectResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "project.origin",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "project.package_name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requestUpdateProjectReq"
+            }
+          }
+        ],
+        "tags": [
+          "Projects"
+        ]
+      }
+    },
+    "/projects": {
+      "post": {
+        "operationId": "CreateProject",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/responseProjectResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requestCreateProjectReq"
+            }
+          }
+        ],
+        "tags": [
+          "Projects"
+        ]
+      }
+    },
+    "/projects/{origin}/{package_name}": {
+      "get": {
+        "operationId": "GetProject",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/responseProjectResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "origin",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "package_name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Projects"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "projectsProject": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "package_name": {
+          "type": "string"
+        },
+        "plan_path": {
+          "type": "string"
+        },
+        "vcs_type": {
+          "type": "string"
+        },
+        "vcs_data": {
+          "type": "string"
+        }
+      },
+      "title": "JB TODO add default visibility to this"
+    },
+    "requestCreateProjectReq": {
+      "type": "object",
+      "properties": {
+        "project": {
+          "$ref": "#/definitions/projectsProject"
+        }
+      }
+    },
+    "requestUpdateProjectReq": {
+      "type": "object",
+      "properties": {
+        "project": {
+          "$ref": "#/definitions/projectsProject"
+        }
+      }
+    },
+    "responseProjectResp": {
+      "type": "object",
+      "properties": {
+        "project": {
+          "$ref": "#/definitions/projectsProject"
+        }
+      }
+    }
+  }
+}

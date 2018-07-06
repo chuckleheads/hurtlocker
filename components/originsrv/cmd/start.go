@@ -7,10 +7,12 @@ import (
 	"net"
 	"net/http"
 
-	pba "github.com/chuckleheads/hurtlocker/components/originsrv/api/origins"
+	opba "github.com/chuckleheads/hurtlocker/components/originsrv/api/origins"
+	ppba "github.com/chuckleheads/hurtlocker/components/originsrv/api/projects"
 	"github.com/chuckleheads/hurtlocker/components/originsrv/config"
 	"github.com/chuckleheads/hurtlocker/components/originsrv/data_store"
-	srv "github.com/chuckleheads/hurtlocker/components/originsrv/origins/server"
+	osrv "github.com/chuckleheads/hurtlocker/components/originsrv/origins/server"
+	psrv "github.com/chuckleheads/hurtlocker/components/originsrv/projects/server"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
@@ -54,7 +56,8 @@ func setup() {
 func runGRPC(config *config.Config, lis net.Listener) {
 	server := grpc.NewServer()
 	db := data_store.New(&config.Datastore)
-	pba.RegisterOriginsServer(server, srv.NewServer(db))
+	opba.RegisterOriginsServer(server, osrv.NewServer(db))
+	ppba.RegisterProjectsServer(server, psrv.NewServer(db))
 	log.Printf("gRPC Listening on %s\n", lis.Addr().String())
 	server.Serve(lis)
 }
@@ -64,7 +67,11 @@ func runHTTP(config *config.Config, clientAddr string) {
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	mux := runtime.NewServeMux()
 
-	if err := pba.RegisterOriginsHandlerFromEndpoint(context.Background(), mux, clientAddr, opts); err != nil {
+	if err := opba.RegisterOriginsHandlerFromEndpoint(context.Background(), mux, clientAddr, opts); err != nil {
+		log.Fatalf("failed to start HTTP server: %v", err)
+	}
+
+	if err := ppba.RegisterProjectsHandlerFromEndpoint(context.Background(), mux, clientAddr, opts); err != nil {
 		log.Fatalf("failed to start HTTP server: %v", err)
 	}
 

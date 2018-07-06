@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package hurtlocker.originsrv.projects.request;
+option go_package = "github.com/chuckleheads/hurtlocker/components/originsrv/projects/request";
+
+import "components/originsrv/projects/projects.proto";
+
+message GetProjectReq {
+    string origin = 1;
+    string package_name = 2;
+}
+
+message CreateProjectReq {
+	projects.Project project = 1;
+}
+
+message UpdateProjectReq {
+	projects.Project project = 1;
+}
