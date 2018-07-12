@@ -34,6 +34,7 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is /hab/svc/agent/config/config.toml)")
+	viper.SetDefault("driver", "docker")
 	viper.SetDefault("rabbitmq.host", "localhost")
 	viper.SetDefault("rabbitmq.port", 5672)
 	viper.SetDefault("rabbitmq.username", "guest")
