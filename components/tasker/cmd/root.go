@@ -13,6 +13,12 @@ var rootCmd = &cobra.Command{
 	Short: "A task runner that executes tasks and streams the output back to the API",
 }
 
+func init() {
+	cobra.OnInitialize(initConfig)
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is /hab/svc/agent/config/config.toml)")
+	rootCmd.PersistentFlags().String("config-string", "", "a base64 encoded config string (useful for passing config though containers)")
+}
+
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {

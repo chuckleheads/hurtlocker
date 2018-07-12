@@ -1,0 +1,9 @@
+# list of hab pacakges you need in the container
+dependencies=["habitat/fetch-code"]
+
+# Command to run by default
+command="hab pkg build ."
+
+# key to access necessary secrets in vault
+# not sure if this is the right shape yet
+vault_key=""

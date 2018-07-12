@@ -18,7 +18,7 @@ func Build(buildReq []byte) {
 }
 
 func runBuild(payload *build.Build) {
-	var d drivers.Driver = drivers.New()
-	d.Pull()
-	d.Start(d.Create([]string{"build", payload.PackagePath}))
+	driver := drivers.New()
+	driver.Pull()
+	driver.Start(driver.Create([]string{"build", payload.PackagePath}))
 }
