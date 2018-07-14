@@ -136,7 +136,7 @@ _build-hurtlocker() {
   fi
 
   if [[ "$#" -eq 0 ]]; then
-    build-hurtlocker rabbitmq datastore originsrv logsrv agent sessionsrv router
+    build-hurtlocker originsrv logsrv agent sessionsrv
     return $?
   fi
 
@@ -144,7 +144,7 @@ _build-hurtlocker() {
     build-component "$component"
   done
 }
-build-hurtlocker() { stop-on-failure _build-hurtlocker; }
+build-hurtlocker() { stop-on-failure _build-hurtlocker "$@"; }
 
 trap _cleanup EXIT
 
