@@ -19,5 +19,14 @@ func Migrate(db *sql.DB, migrations_dir string) {
 		fmt.Sprintf("file://%s", migrations_dir),
 		"postgres", driver)
 	// TED: better handling of errors here when you know more about Go Error handling
-	m.Up()
+	if err != nil {
+		fmt.Printf("Error getting database connection for migrations: %s\n", err)
+	}
+
+	err = m.Up()
+
+	if err != nil {
+		fmt.Printf("Error running migrations: %s\n", err)
+		fmt.Printf("File: file://%s\n", migrations_dir)
+	}
 }

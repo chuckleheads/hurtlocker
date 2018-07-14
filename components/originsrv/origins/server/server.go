@@ -5,6 +5,7 @@ import (
 	"database/sql"
 
 	"github.com/chuckleheads/hurtlocker/components/originsrv/data_store/functions"
+	"github.com/chuckleheads/hurtlocker/components/originsrv/origins"
 	"github.com/chuckleheads/hurtlocker/components/originsrv/origins/request"
 	"github.com/chuckleheads/hurtlocker/components/originsrv/origins/response"
 	_ "github.com/lib/pq"
@@ -32,7 +33,7 @@ func (srv *Server) CreateOrigin(ctx context.Context, req *request.CreateOriginRe
 		panic(err.Error())
 	}
 
-	origin := response.Origin{
+	origin := origins.Origin{
 		Id:   id,
 		Name: req.Name,
 		DefaultPackageVisibility: req.DefaultPackageVisibility,
@@ -46,7 +47,7 @@ func (srv *Server) CreateOrigin(ctx context.Context, req *request.CreateOriginRe
 }
 
 func (srv *Server) GetOrigin(ctx context.Context, req *request.GetOriginReq) (*response.OriginResp, error) {
-	var origin response.Origin
+	var origin origins.Origin
 
 	err := srv.db.
 		QueryRow(functions.GetOriginByNameV1, req.Name).
@@ -68,7 +69,7 @@ func (srv *Server) GetOrigin(ctx context.Context, req *request.GetOriginReq) (*r
 }
 
 func (srv *Server) UpdateOrigin(ctx context.Context, req *request.UpdateOriginReq) (*response.OriginResp, error) {
-	var origin response.Origin
+	var origin origins.Origin
 	err := srv.db.
 		QueryRow(functions.UpdateOriginV1, req.DefaultPackageVisibility, req.Name).
 		Scan(&origin.Id, &origin.Name, &origin.DefaultPackageVisibility)

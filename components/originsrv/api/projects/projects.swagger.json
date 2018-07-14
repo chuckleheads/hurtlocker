@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "components/originsrv/api/origins/origins.proto",
+    "title": "components/originsrv/api/projects/projects.proto",
     "version": "version not set"
   },
   "schemes": [
@@ -15,14 +15,14 @@
     "application/json"
   ],
   "paths": {
-    "/origins": {
+    "/projects": {
       "post": {
-        "operationId": "CreateOrigin",
+        "operationId": "CreateProject",
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/responseOriginResp"
+              "$ref": "#/definitions/responseProjectResp"
             }
           }
         },
@@ -32,51 +32,65 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/requestCreateOriginReq"
+              "$ref": "#/definitions/requestCreateProjectReq"
             }
           }
         ],
         "tags": [
-          "Origins"
+          "Projects"
         ]
       }
     },
-    "/origins/{name}": {
+    "/projects/{origin}/{package_name}": {
       "get": {
-        "operationId": "GetOrigin",
+        "operationId": "GetProject",
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/responseOriginResp"
+              "$ref": "#/definitions/responseProjectResp"
             }
           }
         },
         "parameters": [
           {
-            "name": "name",
+            "name": "origin",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "package_name",
             "in": "path",
             "required": true,
             "type": "string"
           }
         ],
         "tags": [
-          "Origins"
+          "Projects"
         ]
-      },
+      }
+    },
+    "/projects/{project.origin}/{project.package_name}": {
       "patch": {
-        "operationId": "UpdateOrigin",
+        "operationId": "UpdateProject",
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/responseOriginResp"
+              "$ref": "#/definitions/responseProjectResp"
             }
           }
         },
         "parameters": [
           {
-            "name": "name",
+            "name": "project.origin",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "project.package_name",
             "in": "path",
             "required": true,
             "type": "string"
@@ -86,59 +100,63 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/requestUpdateOriginReq"
+              "$ref": "#/definitions/requestUpdateProjectReq"
             }
           }
         ],
         "tags": [
-          "Origins"
+          "Projects"
         ]
       }
     }
   },
   "definitions": {
-    "originsOrigin": {
+    "projectsProject": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
           "format": "int64"
         },
-        "name": {
-          "type": "string"
-        },
-        "default_package_visibility": {
-          "type": "string"
-        }
-      }
-    },
-    "requestCreateOriginReq": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "default_package_visibility": {
-          "type": "string"
-        }
-      }
-    },
-    "requestUpdateOriginReq": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "default_package_visibility": {
-          "type": "string"
-        }
-      }
-    },
-    "responseOriginResp": {
-      "type": "object",
-      "properties": {
         "origin": {
-          "$ref": "#/definitions/originsOrigin"
+          "type": "string"
+        },
+        "package_name": {
+          "type": "string"
+        },
+        "plan_path": {
+          "type": "string"
+        },
+        "vcs_type": {
+          "type": "string"
+        },
+        "vcs_data": {
+          "type": "string"
+        }
+      },
+      "title": "JB TODO add default visibility to this"
+    },
+    "requestCreateProjectReq": {
+      "type": "object",
+      "properties": {
+        "project": {
+          "$ref": "#/definitions/projectsProject"
+        }
+      }
+    },
+    "requestUpdateProjectReq": {
+      "type": "object",
+      "properties": {
+        "project": {
+          "$ref": "#/definitions/projectsProject"
+        }
+      }
+    },
+    "responseProjectResp": {
+      "type": "object",
+      "properties": {
+        "project": {
+          "$ref": "#/definitions/projectsProject"
         }
       }
     }
