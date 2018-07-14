@@ -30,6 +30,10 @@ do_hurtlocker_install() {
 			cp -v "$hook" "$pkg_path/hooks/$(basename "$hook")"
 		done
 	fi
+  if [ -d "$PLAN_CONTEXT/../migrations" ]; then
+		build_line "Copying migrations into package"
+    cp -r "$PLAN_CONTEXT/../migrations" "${pkg_path}/"
+  fi
 }
 
 do_install_wrapper() {

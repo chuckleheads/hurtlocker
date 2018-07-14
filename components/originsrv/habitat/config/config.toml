@@ -1,3 +1,5 @@
+http_port = {{cfg.http_port}}
+
 [datastore]
 database = "{{cfg.datastore.database}}"
 {{#eachAlive bind.datastore.members as |member| ~}}
