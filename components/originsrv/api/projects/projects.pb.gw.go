@@ -255,7 +255,7 @@ var (
 
 	pattern_Projects_CreateProject_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"projects"}, ""))
 
-	pattern_Projects_UpdateProject_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 1, 0, 4, 1, 5, 2}, []string{"origins", "project.origin", "project.package_name"}, ""))
+	pattern_Projects_UpdateProject_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 1, 0, 4, 1, 5, 2}, []string{"projects", "project.origin", "project.package_name"}, ""))
 )
 
 var (

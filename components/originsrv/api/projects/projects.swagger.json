@@ -15,44 +15,6 @@
     "application/json"
   ],
   "paths": {
-    "/origins/{project.origin}/{project.package_name}": {
-      "patch": {
-        "operationId": "UpdateProject",
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/responseProjectResp"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "project.origin",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "project.package_name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/requestUpdateProjectReq"
-            }
-          }
-        ],
-        "tags": [
-          "Projects"
-        ]
-      }
-    },
     "/projects": {
       "post": {
         "operationId": "CreateProject",
@@ -102,6 +64,44 @@
             "in": "path",
             "required": true,
             "type": "string"
+          }
+        ],
+        "tags": [
+          "Projects"
+        ]
+      }
+    },
+    "/projects/{project.origin}/{project.package_name}": {
+      "patch": {
+        "operationId": "UpdateProject",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/responseProjectResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "project.origin",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "project.package_name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/requestUpdateProjectReq"
+            }
           }
         ],
         "tags": [

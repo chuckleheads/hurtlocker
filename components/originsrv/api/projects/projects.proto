@@ -20,7 +20,7 @@ service Projects {
     };
     rpc UpdateProject (originsrv.projects.request.UpdateProjectReq) returns (originsrv.projects.response.ProjectResp) {
         option (google.api.http) = {
-            patch: "/origins/{project.origin}/{project.package_name}"
+            patch: "/projects/{project.origin}/{project.package_name}"
             body: "*"
         };
     };
