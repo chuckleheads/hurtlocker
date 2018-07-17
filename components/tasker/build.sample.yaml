@@ -1,0 +1,8 @@
+# A list of additional hab packages to install
+secrets:
+  - "GH_SECRET_KEY=some_secret_key"
+environment:
+  - "HAB_ORIGIN=edavis"
+  - "HAB_AUTH_TOKEN=asdf"
+plan_path: "redis"
+repo_url: "https://github.com/elliott-davis/core-plans"

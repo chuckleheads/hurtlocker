@@ -25,27 +25,32 @@ import (
 	git "gopkg.in/src-d/go-git.v4"
 )
 
+var path string
 var key string
 var appID int
 var installID int
-var repo string
+var URL string
+var isPrivate bool
+
 var rootCmd = &cobra.Command{
 	Use:   "fetch-code",
 	Short: "Fetches source code from GitHub",
 	Run: func(cmd *cobra.Command, args []string) {
-		itr, err := ghinstallation.NewKeyFromFile(http.DefaultTransport, appID, installID, key)
+		customURL, err := url.Parse(URL)
 		if err != nil {
-			panic("Oh Snap")
+			panic(err)
 		}
-		token, err := itr.Token()
 
-		customURL := url.URL{
-			Scheme: "https",
-			User:   url.UserPassword("x-access-token", token),
-			Host:   "github.com",
-			Path:   fmt.Sprintf("%s.git", repo),
+		if isPrivate {
+			itr, err := ghinstallation.NewKeyFromFile(http.DefaultTransport, appID, installID, key)
+			if err != nil {
+				panic(err)
+			}
+			token, err := itr.Token()
+			customURL.User = url.UserPassword("x-access-token", token)
 		}
-		_, err = git.PlainClone("/tmp/foo", false, &git.CloneOptions{
+
+		_, err = git.PlainClone(path, false, &git.CloneOptions{
 			URL:      customURL.String(),
 			Progress: os.Stdout,
 		})
@@ -63,10 +68,12 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.Flags().String("host", "github.com", "Backend Type. Example: github.com")
+	rootCmd.Flags().StringVar(&path, "path", "", "Path to clone repo into")
+	rootCmd.Flags().StringVar(&URL, "url", "", "Backend Type. Example: github.com")
 	rootCmd.Flags().IntVarP(&installID, "installId", "i", 0, "GitHub Install ID")
 	rootCmd.Flags().IntVarP(&appID, "appId", "a", 0, "GitHub App ID")
 	rootCmd.Flags().StringVarP(&key, "key", "k", "", "GitHub Secret Key")
-	rootCmd.Flags().StringVarP(&repo, "repo", "r", "", "Repo to Clone")
-	rootCmd.MarkFlagRequired("repo")
+	rootCmd.Flags().BoolVarP(&isPrivate, "private", "p", false, "Mark a repo as private")
+	rootCmd.MarkFlagRequired("url")
+	rootCmd.MarkFlagRequired("path")
 }
