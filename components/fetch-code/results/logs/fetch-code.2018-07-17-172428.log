@@ -1,0 +1,8 @@
+Script started on Tue Jul 17 17:24:28 2018
+   [1;36m: [1;37mLoading /src/habitat/plan.sh[0m
+/src/habitat/plan.sh: line 1: ../../support/dev/hurtlocker-base-plan.sh: No such file or directory
+   [1;36mfetch-code: [1;37mPlan loaded[0m
+   [1;36mfetch-code: [1;37mValidating plan metadata[0m
+[1;31mERROR: [1;37mFailed to build. 'pkg_version' must be set or 'pkg_version()' function must be implemented and then invoking by calling 'update_pkg_version()'.[0m
+
+Script done on Tue Jul 17 17:24:28 2018
