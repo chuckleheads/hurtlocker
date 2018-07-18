@@ -19,6 +19,6 @@ func New() Driver {
 	}
 	return Docker{
 		Client: cli,
-		Image:  "habitat/default-studio:0.58.0",
+		Image:  "chuckleheads/tasker",
 	}
 }

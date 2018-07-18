@@ -24,8 +24,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file")
 	rootCmd.PersistentFlags().StringVar(&cfgString, "config-string", "", "a base64 encoded config string (useful for passing config though containers)")
-	rootCmd.PersistentFlags().Bool("enable-log-stream", false, "Enable log streaming over gRPC")
-	viper.BindPFlag("enable-log-stream", rootCmd.Flags().Lookup("enable-log-stream"))
+	viper.SetDefault("enable-log-stream", false)
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -42,7 +41,14 @@ func initConfig() {
 	if cfgFile != "" {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
+		// If a config file is found, read it in.
+		if err := viper.ReadInConfig(); err == nil {
+			fmt.Println("Using config file:", viper.ConfigFileUsed())
+		} else {
+			log.Fatal(err)
+		}
 	} else {
+		viper.SetConfigType("yaml")
 		cfg, err := base64.StdEncoding.DecodeString(cfgString)
 		if err != nil {
 			log.Fatalln(err)
@@ -54,11 +60,4 @@ func initConfig() {
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	} else {
-		log.Fatal(err)
-	}
 }
