@@ -26,7 +26,7 @@ func New(basePath string) BuildCli {
 		repoURL:  viper.GetString("repo_url"),
 		planPath: viper.GetString("plan_path"),
 	}
-	if viper.GetBool("enable-log-stream") {
+	if viper.GetBool("enable_log_stream") {
 		client := cmd.LogSrvClient()
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()

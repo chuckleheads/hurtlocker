@@ -53,7 +53,11 @@ var testPublishCmd = &cobra.Command{
 		failOnError(err, "Failed to declare an exchange")
 
 		buildReq := &build.Build{
-			PackagePath: ".",
+			PlanPath:        "redis",
+			RepoUrl:         "https://github.com/elliott-davis/core-plans",
+			Channel:         "unstable",
+			Environment:     []string{"HAB_ORIGIN=edavis"},
+			EnableLogStream: false,
 		}
 
 		body, err := proto.Marshal(buildReq)

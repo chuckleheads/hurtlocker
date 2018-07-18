@@ -48,7 +48,7 @@ func initConfig() {
 			log.Fatal(err)
 		}
 	} else {
-		viper.SetConfigType("yaml")
+		viper.SetConfigType("json")
 		cfg, err := base64.StdEncoding.DecodeString(cfgString)
 		if err != nil {
 			log.Fatalln(err)

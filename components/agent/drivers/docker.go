@@ -8,6 +8,7 @@ import (
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/client"
 )
 
@@ -25,10 +26,20 @@ func (d Docker) Pull() {
 }
 
 func (d Docker) Create(cmd []string) string {
+	var mounts []mount.Mount
+	mounts = append(mounts, mount.Mount{
+		Type:     "bind",
+		Source:   "/hab/cache/keys",
+		Target:   "/hab/cache/keys",
+		ReadOnly: false,
+	})
+
 	resp, err := d.Client.ContainerCreate(context.Background(), &container.Config{
 		Image: d.Image,
 		Cmd:   cmd,
-	}, nil, nil, "")
+	}, &container.HostConfig{
+		Mounts: mounts,
+	}, nil, "")
 	if err != nil {
 		panic(err)
 	}

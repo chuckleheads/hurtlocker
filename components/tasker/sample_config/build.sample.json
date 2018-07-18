@@ -1,0 +1,7 @@
+{
+  "secrets": ["GH_SECRET_KEY=some_secret_key"],
+  "environment": ["HAB_ORIGIN=edavis"],
+  "plan_path": "redis",
+  "repo_url": "https://github.com/elliott-davis/core-plans",
+  "channel": "unstable"
+}
