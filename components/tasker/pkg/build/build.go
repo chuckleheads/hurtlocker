@@ -40,13 +40,13 @@ func (b *BuildCli) Start() {
 
 func (b *BuildCli) fetchDeps() {
 	fmt.Println("Fetchin ur deps")
-	cmd.RunCommand(b.logsrv, "hab", "pkg", "install", "edavis/fetch-code", "-b")
+	cmd.RunCommand(b.logsrv, "hab", "pkg", "install", "chuckleheads/fetch-code", "-b")
 	cmd.RunCommand(b.logsrv, "hab", "pkg", "install", "core/hab-backline", "core/hab-plan-build")
 }
 
 func (b *BuildCli) cloneRepo() {
 	fmt.Println("Clonin ur repoz")
-	cmd.RunCommand(b.logsrv, "hab", "pkg", "exec", "edavis/fetch-code", "fetch-code", "--url", b.repoURL, "--path", b.basePath)
+	cmd.RunCommand(b.logsrv, "hab", "pkg", "exec", "chuckleheads/fetch-code", "fetch-code", "--url", b.repoURL, "--path", b.basePath)
 }
 
 func (b *BuildCli) build() {
