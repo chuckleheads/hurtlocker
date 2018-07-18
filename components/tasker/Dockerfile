@@ -1,4 +1,4 @@
-FROM habitat/default-studio as hab
+FROM habitat/default-studio:0.58.0 as hab
 
 ENV PATH=${PATH}:/hab/bin
 ARG BLDR_CHANNEL=stable

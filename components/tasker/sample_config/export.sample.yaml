@@ -1,9 +1,0 @@
-# A list of additional hab packages to install
-secrets:
-  - "DOCKER_USERNAME=some_user"
-  - "DOCKER_PASSWORD=password"
-environment:
-  - "HAB_AUTH_TOKEN=asdf"
-package: "core/redis"
-channel: "unstable"
-type: "docker"

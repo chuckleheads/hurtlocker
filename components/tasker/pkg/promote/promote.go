@@ -16,7 +16,7 @@ type PromoteCli struct {
 
 func New() PromoteCli {
 	promoteCli := PromoteCli{}
-	if viper.GetBool("enable-log-stream") {
+	if viper.GetBool("enable_log_stream") {
 		client := cmd.LogSrvClient()
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
