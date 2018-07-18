@@ -31,12 +31,12 @@ func RunCommand(stream pb.LogRecv_ReceiveLogsClient, command ...string) {
 			case line := <-habCmd.Stdout:
 				fmt.Println(line)
 
-				stream.Send(&pbr.LogLine{
+				sendStream(stream, pbr.LogLine{
 					StdoutLine: line,
 				})
 			case line := <-habCmd.Stderr:
 				fmt.Fprintln(os.Stderr, line)
-				stream.Send(&pbr.LogLine{
+				sendStream(stream, pbr.LogLine{
 					StderrLine: line,
 				})
 			}
@@ -47,12 +47,20 @@ func RunCommand(stream pb.LogRecv_ReceiveLogsClient, command ...string) {
 	<-habCmd.Start()
 
 	// Cmd has finished but wait for goroutine to print all lines
-	for len(habCmd.Stdout) > 0 || len(habCmd.Stderr) > 0 {
-		time.Sleep(10 * time.Millisecond)
-		reply, err := stream.CloseAndRecv()
-		if err != nil {
-			log.Fatalf("%v.CloseAndRecv() got error %v, want %v", stream, err, nil)
+	if stream != nil {
+		for len(habCmd.Stdout) > 0 || len(habCmd.Stderr) > 0 {
+			time.Sleep(10 * time.Millisecond)
+			reply, err := stream.CloseAndRecv()
+			if err != nil {
+				log.Fatalf("%v.CloseAndRecv() got error %v, want %v", stream, err, nil)
+			}
+			log.Printf("Route summary: %v", reply)
 		}
-		log.Printf("Route summary: %v", reply)
+	}
+}
+
+func sendStream(stream pb.LogRecv_ReceiveLogsClient, line pbr.LogLine) {
+	if stream != nil {
+		stream.Send(&line)
 	}
 }

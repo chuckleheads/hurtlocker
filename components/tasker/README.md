@@ -13,3 +13,8 @@ A specialized task runner for Habitat build jobs
 ## Running locally
 
 `go run main.go <COMMAND> --config <FILE>`
+
+## Running in Docker
+
+* `docker build -t chuckleheads/tasker components/tasker`
+* `docker run -v /hab/cache/keys:/hab/cache/keys -v $PWD:/src -it --rm chuckleheads/tasker tasker build --config build.sample.yaml`

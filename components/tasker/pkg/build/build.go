@@ -1,12 +1,16 @@
 package build
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
+	"time"
 
 	pb "github.com/chuckleheads/hurtlocker/components/logsrv/logrecv"
 	"github.com/chuckleheads/hurtlocker/components/tasker/pkg/cmd"
+	"github.com/spf13/viper"
 )
 
 type BuildCli struct {
@@ -16,21 +20,27 @@ type BuildCli struct {
 	planPath string
 }
 
-func New(
-	logsrv pb.LogRecv_ReceiveLogsClient,
-	basePath string,
-	repoURL string,
-	planPath string,
-) BuildCli {
-	return BuildCli{
-		logsrv,
-		basePath,
-		repoURL,
-		planPath,
+func New(basePath string) BuildCli {
+	buildCli := BuildCli{
+		basePath: basePath,
+		repoURL:  viper.GetString("repo_url"),
+		planPath: viper.GetString("plan_path"),
 	}
+	if viper.GetBool("enable-log-stream") {
+		client := cmd.LogSrvClient()
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		stream, err := client.ReceiveLogs(ctx)
+		if err != nil {
+			log.Fatalf("%v.RecordRoute(_) = _, %v", client, err)
+		}
+		buildCli.logsrv = stream
+	}
+	return buildCli
 }
 
 func (b *BuildCli) Start() {
+	// TED TODO: should be checking for errors here and bailing early
 	os.Chdir(b.basePath)
 	b.fetchDeps()
 	b.cloneRepo()
@@ -39,28 +49,24 @@ func (b *BuildCli) Start() {
 }
 
 func (b *BuildCli) fetchDeps() {
-	fmt.Println("Fetchin ur deps")
 	cmd.RunCommand(b.logsrv, "hab", "pkg", "install", "chuckleheads/fetch-code", "-b")
 	cmd.RunCommand(b.logsrv, "hab", "pkg", "install", "core/hab-backline", "core/hab-plan-build")
 }
 
 func (b *BuildCli) cloneRepo() {
-	fmt.Println("Clonin ur repoz")
 	cmd.RunCommand(b.logsrv, "hab", "pkg", "exec", "chuckleheads/fetch-code", "fetch-code", "--url", b.repoURL, "--path", b.basePath)
 }
 
 func (b *BuildCli) build() {
-	fmt.Println("buildin ur shiz")
 	cmd.RunCommand(b.logsrv, "hab", "pkg", "exec", "core/hab-plan-build", "hab-plan-build", filepath.Join(b.basePath, b.planPath))
 }
 
 func (b *BuildCli) uploadArtifact() {
-	fmt.Println("Uploadin dat shiz")
 	artifact, err := findHart(b.basePath)
 	if err != nil {
 		panic(err)
 	}
-	cmd.RunCommand(b.logsrv, "hab", "pkg", "upload", artifact, "-c", "unstable")
+	cmd.RunCommand(b.logsrv, "hab", "pkg", "upload", artifact, "-c", viper.GetString("channel"))
 }
 
 func findHart(path string) (string, error) {
