@@ -1,0 +1,10 @@
+#!/bin/sh
+
+exec dgraph server \
+  --lru_mb="1024" \
+  --my={{me.sys.ip}}:{{cfg.port}} \
+  --wal {{pkg.svc_data_path}}/w \
+  --postings {{pkg.svc_data_path}}/p \
+  {{~#each bind.zero.members as |member|}}
+  --zero={{member.sys.ip}}:{{member.cfg.port}}
+  {{~/each}}

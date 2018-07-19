@@ -6,5 +6,6 @@ exec cockroach start \
 {{#if cfg.dev_mode ~}}
 --insecure \
 {{/if ~}}
+--http-port 9090 \
 --store={{pkg.svc_data_path}} \
 --log-dir={{pkg.svc_var_dir}}

@@ -6,6 +6,9 @@ NO_COLOR='\033[0m'
 declare -A svc_params=(
   [agent]="      --bind rabbitmq:rabbitmq.default"
   [datastore]=""
+  [graph-datastore-zero]=""
+  [graph-datastore-server]="--bind zero:graph-datastore-zero.default"
+  [graph-datastore-ratel]=""
   [logsrv]=""
   [originsrv]="  --bind datastore:datastore.default"
   [router]="     --bind originsrv:originsrv.default --bind sessionsrv:sessionsrv.default --bind logsrv:logsrv.default"
@@ -68,12 +71,11 @@ load-if-not-loaded() { stop-on-failure _load-if-not-loaded "$@"; }
 
 _start-hurtlocker() {
   if [[ "$#" -eq 0 ]]; then
-    start-hurtlocker agent
-    start-hurtlocker datastore
-    start-hurtlocker logsrv
-    start-hurtlocker originsrv
-    start-hurtlocker rabbitmq
-    start-hurtlocker sessionsrv
+    start-hurtlocker agent datastore logsrv originsrv rabbitmq sessionsrv \
+    graph-datastore-zero graph-datastore-server graph-datastore-ratel
+    # Since we must optionally bind on services we need to wait on
+    # them to be up before starting the router
+    # SLEEP4EVA
     sleep 10
     start-hurtlocker router
     return $?
