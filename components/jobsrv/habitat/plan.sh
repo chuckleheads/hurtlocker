@@ -1,0 +1,19 @@
+source ../../../support/dev/hurtlocker-base-plan.sh
+
+pkg_name=jobsrv
+pkg_origin=chuckleheads
+pkg_description="Job Server is a gRPC server that deals with job requests"
+pkg_upstream_url="https://github.com/chuckleheads/hurtlocker"
+pkg_license=('Apache-2.0')
+pkg_maintainer="The Habitat Maintainers <humans@habitat.sh>"
+pkg_bin_dirs=(bin)
+pkg_build_deps=(core/go core/git core/dep)
+pkg_deps=(core/cockroach)
+pkg_binds=(
+  [datastore]="port"
+)
+pkg_exports=(
+  [port]=port
+  [http_port]=http_port
+)
+pkg_exposes=(port http_port)

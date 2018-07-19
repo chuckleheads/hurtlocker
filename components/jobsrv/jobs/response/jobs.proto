@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package hurtlocker.jobsrv.jobs.response;
+option go_package = "github.com/chuckleheads/hurtlocker/components/jobsrv/jobs/response";
+
+message Job {
+    int64 id = 1;
+    string name = 2;
+}
+
+message Jobs {
+    repeated Job jobs = 1;
+}
+
+message JobResp {
+    Job job = 1;
+}
+
+message JobsResp {
+    Jobs jobs = 1;
+}

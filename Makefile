@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := all
 
-all: worker
+all: worker jobsrv
 
 # Order Matters
 
@@ -18,3 +18,6 @@ logsrv: sessionsrv
 
 worker: logsrv
 	components/worker/scripts/grpc.sh
+
+jobsrv:
+	components/jobsrv/scripts/grpc.sh

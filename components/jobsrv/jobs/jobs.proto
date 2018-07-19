@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package hurtlocker.jobsrv.jobs;
+option go_package = "github.com/chuckleheads/hurtlocker/components/jobsrv/jobs";
+
+import "components/jobsrv/jobs/request/jobs.proto";
+import "components/jobsrv/jobs/response/jobs.proto";
+
+service Jobs {
+    rpc GetJob (jobs.request.GetJobReq) returns (jobs.response.JobResp);
+    rpc CreateJob (jobs.request.CreateJobReq) returns (jobs.response.JobResp);
+}

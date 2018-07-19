@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cockroach sql --execute="CREATE DATABASE IF NOT EXISTS {{cfg.datastore.database}};" --insecure
+
+jobsrv migrate --config "{{pkg.svc_config_path}}/config.toml"

@@ -1,0 +1,9 @@
+[datastore]
+database = "{{cfg.datastore.database}}"
+{{#eachAlive bind.datastore.members as |member| ~}}
+{{#if @first ~}}
+host = "{{member.sys.ip}}"
+port = {{member.cfg.port}}
+{{/if ~}}
+{{/eachAlive ~}}
+migrations = "{{pkg.path}}/migrations"
