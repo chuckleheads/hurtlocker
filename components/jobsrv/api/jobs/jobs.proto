@@ -18,7 +18,7 @@ service Jobs {
             body: "*"
         };
     };
-    rpc GetJobLogs (jobsrv.jobs.request.GetJobLogs) returns (jobsrv.jobs.response.LogsResp) {
-        option (google.api.http).get = "/jobs/{id}/logs";
-    };
+    // rpc GetJobLogs (jobsrv.jobs.request.GetJobLogs) returns (jobsrv.jobs.response.LogsResp) {
+    //     option (google.api.http).get = "/jobs/{id}/logs";
+    // };
 }
