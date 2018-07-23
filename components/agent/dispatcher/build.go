@@ -28,5 +28,8 @@ func Build(buildReq []byte) {
 func runBuild(config string) {
 	driver := drivers.New()
 	driver.Pull()
-	driver.Start(driver.Create([]string{"tasker", "build", "--config-string", config}))
+	mounts := map[string]string{
+		"/hab/cache/keys": "/hab/cache/keys",
+	}
+	driver.Start(driver.Create(mounts, []string{"tasker", "build", "--config-string", config}))
 }

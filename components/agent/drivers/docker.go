@@ -17,7 +17,7 @@ type Docker struct {
 	Image  string
 }
 
-func (d Docker) Pull() {
+func (d *Docker) Pull() {
 	out, err := d.Client.ImagePull(context.Background(), d.Image, types.ImagePullOptions{})
 	if err != nil {
 		panic(err)
@@ -25,20 +25,12 @@ func (d Docker) Pull() {
 	io.Copy(os.Stdout, out)
 }
 
-func (d Docker) Create(cmd []string) string {
-	var mounts []mount.Mount
-	mounts = append(mounts, mount.Mount{
-		Type:     "bind",
-		Source:   "/hab/cache/keys",
-		Target:   "/hab/cache/keys",
-		ReadOnly: false,
-	})
-
+func (d *Docker) Create(mnts map[string]string, cmd []string) string {
 	resp, err := d.Client.ContainerCreate(context.Background(), &container.Config{
 		Image: d.Image,
 		Cmd:   cmd,
 	}, &container.HostConfig{
-		Mounts: mounts,
+		Mounts: d.mounts(mnts),
 	}, nil, "")
 	if err != nil {
 		panic(err)
@@ -47,8 +39,21 @@ func (d Docker) Create(cmd []string) string {
 	return resp.ID
 }
 
-func (d Docker) Start(id string) {
+func (d *Docker) Start(id string) {
 	if err := d.Client.ContainerStart(context.Background(), id, types.ContainerStartOptions{}); err != nil {
 		panic(err)
 	}
+}
+
+func (d *Docker) mounts(mounts map[string]string) []mount.Mount {
+	var mnts []mount.Mount
+	for src, dest := range mounts {
+		mnts = append(mnts, mount.Mount{
+			Type:     "bind",
+			Source:   src,
+			Target:   dest,
+			ReadOnly: false,
+		})
+	}
+	return mnts
 }

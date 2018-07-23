@@ -4,5 +4,6 @@ package hurtlocker.agent.export;
 option go_package = "github.com/chuckleheads/hurtlocker/components/agent/proto/export";
 
 message Export {
-    string packageName = 1;
+    string ident = 1;
+    string channel = 2;
 }

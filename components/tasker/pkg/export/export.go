@@ -11,13 +11,15 @@ import (
 )
 
 type ExportCli struct {
-	logsrv pb.LogRecv_ReceiveLogsClient
-	ident  string
+	logsrv  pb.LogRecv_ReceiveLogsClient
+	ident   string
+	channel string
 }
 
 func New() ExportCli {
 	exportCli := ExportCli{
-		ident: viper.GetString("ident"),
+		ident:   viper.GetString("ident"),
+		channel: viper.GetString("channel"),
 	}
 	if viper.GetBool("enable_log_stream") {
 		client := cmd.LogSrvClient()
@@ -33,5 +35,5 @@ func New() ExportCli {
 }
 
 func (e *ExportCli) Export() {
-	cmd.RunCommand(e.logsrv, "hab", "pkg", "export", "docker", e.ident)
+	cmd.RunCommand(e.logsrv, "hab", "pkg", "export", "docker", e.ident, "--channel", e.channel)
 }
