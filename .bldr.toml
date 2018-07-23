@@ -24,3 +24,9 @@ plan_path = "components/tasker/habitat"
 paths = [
   "components/tasker/*",
 ]
+
+[agent]
+plan_path = "components/agent/habitat"
+paths = [
+  "components/agent/*",
+]

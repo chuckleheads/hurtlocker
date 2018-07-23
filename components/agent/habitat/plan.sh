@@ -8,6 +8,7 @@ pkg_license=('Apache-2.0')
 pkg_maintainer="The Habitat Maintainers <humans@habitat.sh>"
 pkg_bin_dirs=(bin)
 pkg_build_deps=(core/go core/git core/dep)
+pkg_deps=(core/glibc)
 pkg_svc_run="${pkg_name} start --config $pkg_svc_config_path"
 pkg_binds=(
   [rabbitmq]="port"
