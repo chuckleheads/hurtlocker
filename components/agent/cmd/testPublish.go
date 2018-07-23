@@ -64,11 +64,10 @@ func init() {
 
 func publishBuild(ch *amqp.Channel, rmqConfig config.RabbitMQConfig) {
 	buildReq := &build.Build{
-		PlanPath:        "redis",
-		RepoUrl:         "https://github.com/elliott-davis/core-plans",
-		Channel:         "unstable",
-		Environment:     []string{"HAB_ORIGIN=edavis"},
-		EnableLogStream: false,
+		PlanPath:    "redis",
+		RepoUrl:     "https://github.com/elliott-davis/core-plans",
+		Channel:     "unstable",
+		Environment: []string{"HAB_ORIGIN=edavis"},
 	}
 
 	body, err := proto.Marshal(buildReq)

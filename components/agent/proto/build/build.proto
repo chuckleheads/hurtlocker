@@ -8,5 +8,4 @@ message Build {
     string plan_path = 2;
     string repo_url = 3;
     string channel = 4;
-    bool enable_log_stream = 5;
 }

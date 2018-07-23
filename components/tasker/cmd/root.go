@@ -24,7 +24,8 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file")
 	rootCmd.PersistentFlags().StringVar(&cfgString, "config-string", "", "a base64 encoded config string (useful for passing config though containers)")
-	viper.SetDefault("enable-log-stream", false)
+	rootCmd.PersistentFlags().Bool("enable-log-stream", false, "Enable log streaming via gRPC")
+	viper.BindPFlag("enable-log-stream", rootCmd.Flags().Lookup("enable-log-stream"))
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
