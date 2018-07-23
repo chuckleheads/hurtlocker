@@ -20,6 +20,16 @@
   revision = "59c0560478b705bf9bd12f9252224a0fad7c87df"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/dgraph-io/dgo"
+  packages = [
+    ".",
+    "protos/api",
+    "y"
+  ]
+  revision = "71e4b7ed50eac8be08c25ff502be0701480f65d0"
+
+[[projects]]
   name = "github.com/dgrijalva/jwt-go"
   packages = ["."]
   revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
@@ -97,6 +107,12 @@
   packages = ["."]
   revision = "b84ca4f2247327f07f46331c260675cba1a1dc7a"
   version = "v1.0.3"
+
+[[projects]]
+  name = "github.com/gogo/protobuf"
+  packages = ["proto"]
+  revision = "636bf0302bc95575d69441b25a2603156ffdddf1"
+  version = "v1.1.1"
 
 [[projects]]
   name = "github.com/golang-migrate/migrate"
@@ -196,12 +212,6 @@
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
   revision = "f15292f7a699fcc1a38a80977f80a046874ba8ac"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/pebbe/zmq4"
-  packages = ["."]
-  revision = "5b443b6471cea4b4f9f85025530c04c93233f76a"
 
 [[projects]]
   name = "github.com/pelletier/go-buffruneio"
@@ -474,6 +484,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e5041f4f543efc9c11c3c48e610b71d70e22f603d864f4906d2f4f037daa9ff8"
+  inputs-digest = "a5fea76e32a27f3b25da8f9d2c683b2814c0796dafc567bcfdfe1ce0a48b8064"
   solver-name = "gps-cdcl"
   solver-version = 1
