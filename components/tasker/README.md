@@ -17,4 +17,5 @@ A specialized task runner for Habitat build jobs
 ## Running in Docker
 
 * `docker build -t chuckleheads/tasker components/tasker`
-* `docker run -v /hab/cache/keys:/hab/cache/keys -it --rm chuckleheads/tasker tasker build --config build.sample.json`
+* `docker run -v /hab/cache/keys:/hab/cache/keys -it --rm chuckleheads/tasker tasker build --config sample_config/build.sample.json`
+* `docker run -v /var/run/docker.sock:/var/run/docker.sock -it --rm chuckleheads/tasker tasker export --config sample_config/export.sample.json`
