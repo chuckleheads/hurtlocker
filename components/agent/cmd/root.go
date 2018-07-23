@@ -41,7 +41,7 @@ func init() {
 	viper.SetDefault("rabbitmq.password", "guest")
 	viper.SetDefault("rabbitmq.exchange", "work")
 	// Listen for all topics by default
-	viper.SetDefault("rabbitmq.topic", [1]string{"#"})
+	viper.SetDefault("rabbitmq.topic", []string{"build.linux", "export.docker"})
 
 }
 

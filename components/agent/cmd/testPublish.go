@@ -45,7 +45,7 @@ var testPublishCmd = &cobra.Command{
 
 		err = ch.ExchangeDeclare(
 			rmqConfig.Exchange, // name
-			"topic",            // type
+			"direct",           // type
 			true,               // durable
 			false,              // auto-deleted
 			false,              // internal
@@ -77,7 +77,7 @@ func publishBuild(ch *amqp.Channel, rmqConfig config.RabbitMQConfig) {
 	}
 	err = ch.Publish(
 		rmqConfig.Exchange, // exchange
-		"build",            // routing key
+		"build.linux",      // routing key
 		false,              // mandatory
 		false,              // immediate
 		amqp.Publishing{
@@ -101,7 +101,7 @@ func publishExport(ch *amqp.Channel, rmqConfig config.RabbitMQConfig) {
 	}
 	err = ch.Publish(
 		rmqConfig.Exchange, // exchange
-		"export",           // routing key
+		"export.docker",    // routing key
 		false,              // mandatory
 		false,              // immediate
 		amqp.Publishing{

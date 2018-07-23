@@ -25,7 +25,7 @@ var startCmd = &cobra.Command{
 
 		err = ch.ExchangeDeclare(
 			rmqConfig.Exchange, // name
-			"topic",            // type
+			"direct",           // type
 			true,               // durable
 			false,              // auto-deleted
 			false,              // internal
@@ -72,11 +72,11 @@ var startCmd = &cobra.Command{
 		go func() {
 			for d := range msgs {
 				switch d.RoutingKey {
-				case "build":
+				case "build.linux":
 					dispatcher.Build(d.Body)
 				case "deploy":
 					dispatcher.Deploy(d.Body)
-				case "export":
+				case "export.docker":
 					dispatcher.Export(d.Body)
 				default:
 					panic("unreachable")
