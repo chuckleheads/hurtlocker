@@ -6,7 +6,7 @@ import (
 
 type Driver interface {
 	Pull()
-	Create([]string) string
+	Create(map[string]string, []string) string
 	Start(string)
 }
 
@@ -17,7 +17,7 @@ func New() Driver {
 	if err != nil {
 		panic(err)
 	}
-	return Docker{
+	return &Docker{
 		Client: cli,
 		Image:  "chuckleheads/tasker",
 	}
