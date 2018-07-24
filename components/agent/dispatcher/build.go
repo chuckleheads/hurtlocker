@@ -31,6 +31,9 @@ func Build(buildReq []byte) {
 func runBuild(config string) {
 	driver := drivers.New()
 	driver.Pull()
+	// TED TODO - Tasker should call out to builder api to get the correct keys
+	// a builder token should be provided by the agent which is generated from
+	// the shared builder key
 	mounts := map[string]string{
 		"/hab/cache/keys": "/hab/cache/keys",
 	}
