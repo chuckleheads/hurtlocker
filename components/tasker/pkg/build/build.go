@@ -23,8 +23,8 @@ type BuildCli struct {
 func New(basePath string) BuildCli {
 	buildCli := BuildCli{
 		basePath: basePath,
-		repoURL:  viper.GetString("repo_url"),
-		planPath: viper.GetString("plan_path"),
+		repoURL:  viper.GetString("project.vcs_data"),
+		planPath: viper.GetString("project.plan_path"),
 	}
 	if viper.GetBool("enable_log_stream") {
 		client := cmd.LogSrvClient()
@@ -58,7 +58,7 @@ func (b *BuildCli) cloneRepo() {
 }
 
 func (b *BuildCli) build() {
-	cmd.RunCommand(b.logsrv, "hab", "pkg", "exec", "core/hab-plan-build", "hab-plan-build", filepath.Join(b.basePath, b.planPath))
+	cmd.RunCommand(b.logsrv, "hab", "pkg", "exec", "core/hab-plan-build", "hab-plan-build", filepath.Join(b.basePath, filepath.Dir(b.planPath)))
 }
 
 func (b *BuildCli) uploadArtifact() {

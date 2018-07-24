@@ -1,7 +1,13 @@
 {
-  "secrets": ["GH_SECRET_KEY=some_secret_key"],
-  "environment": ["HAB_ORIGIN=edavis"],
-  "plan_path": "redis",
-  "repo_url": "https://github.com/elliott-davis/core-plans",
-  "channel": "unstable"
+  "project":{
+    "id":1029731824168869918,
+    "origin_name":"edavis",
+    "package_name":"varnish",
+    "name":"core/varnish",
+    "plan_path":"varnish/plan.sh",
+    "owner_id":1029727498054672465,
+    "vcs_type":"git",
+    "vcs_data":"https://github.com/elliott-davis/core-plans",
+    "vcs_installation_id":250304
+  }
 }
