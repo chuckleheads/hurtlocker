@@ -1,0 +1,61 @@
+
+syntax = "proto3";
+
+// TED TODO: This should be imported from OriginSrv
+package hurtlocker.agent.originsrv;
+option go_package = "github.com/chuckleheads/hurtlocker/components/agent/proto/originsrv";
+
+message OriginPackageIdent {
+    string origin = 1;
+    string name = 2;
+    string version = 3;
+    string release = 4;
+}
+
+enum OriginPackageVisibility {
+    Public = 0;
+    Private = 1;
+    Hidden = 2;
+  }
+
+message OriginProject {
+    uint64 id = 1;
+    uint64 origin_id = 2;
+    string origin_name = 3;
+    string package_name = 4;
+    string name = 5;
+    string plan_path = 6;
+    uint64 owner_id = 7;
+    string vcs_type = 8;
+    string vcs_data = 9;
+    uint32 vcs_installation_id = 12;
+    OriginPackageVisibility visibility = 13;
+    bool auto_build = 14;
+}
+
+
+message OriginSecret {
+    uint64 id = 1;
+    uint64 origin_id = 2;
+    string name = 3;
+    string value = 4;
+}
+
+message OriginSecretDecrypted {
+    OriginSecret decrypted_secret = 1;
+}
+
+message OriginProjectIntegration {
+    string origin = 1;
+    string name = 2;
+    string integration = 3;
+    string integration_name = 4;
+    string body = 5;
+}
+
+message OriginIntegration {
+    string origin = 1;
+    string integration = 2;
+    string name = 3;
+    string body = 4;
+}

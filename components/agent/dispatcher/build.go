@@ -3,6 +3,7 @@ package dispatcher
 import (
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"log"
 
 	"github.com/chuckleheads/hurtlocker/components/agent/drivers"
@@ -12,7 +13,7 @@ import (
 )
 
 func Build(buildReq []byte) {
-	build := &build.Build{}
+	build := &build.BuildRequest{}
 	if err := proto.Unmarshal(buildReq, build); err != nil {
 		log.Fatalln("Failed to parse Build:", err)
 	}
@@ -21,6 +22,8 @@ func Build(buildReq []byte) {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	fmt.Println(string(config))
 
 	runBuild(base64.StdEncoding.EncodeToString(config))
 }

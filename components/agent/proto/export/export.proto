@@ -3,7 +3,15 @@ syntax = "proto3";
 package hurtlocker.agent.export;
 option go_package = "github.com/chuckleheads/hurtlocker/components/agent/proto/export";
 
-message Export {
-    string ident = 1;
-    string channel = 2;
+import "components/agent/proto/originsrv/originsrv.proto";
+
+message PublishRequest {
+    originsrv.OriginPackageIdent package_ident = 1;
+    repeated originsrv.OriginIntegration integrations = 2;
+    string channel = 3;
+    repeated originsrv.OriginProjectIntegration project_integrations = 4;
+}
+
+message PublishResponse {
+    bool job_status = 1;
 }

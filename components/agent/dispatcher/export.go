@@ -3,6 +3,7 @@ package dispatcher
 import (
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"log"
 
 	"github.com/chuckleheads/hurtlocker/components/agent/drivers"
@@ -11,7 +12,7 @@ import (
 )
 
 func Export(exportReq []byte) {
-	export := &export.Export{}
+	export := &export.PublishRequest{}
 	if err := proto.Unmarshal(exportReq, export); err != nil {
 		log.Fatalln("Failed to parse Export:", err)
 	}
@@ -20,6 +21,8 @@ func Export(exportReq []byte) {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	fmt.Println(string(config))
 
 	runExport(base64.StdEncoding.EncodeToString(config))
 }

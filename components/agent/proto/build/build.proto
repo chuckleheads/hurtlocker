@@ -3,9 +3,13 @@ syntax = "proto3";
 package hurtlocker.agent.build;
 option go_package = "github.com/chuckleheads/hurtlocker/components/agent/proto/build";
 
-message Build {
-    repeated string environment = 1;
-    string plan_path = 2;
-    string repo_url = 3;
-    string channel = 4;
+import "components/agent/proto/originsrv/originsrv.proto";
+
+message BuildRequest {
+    repeated originsrv.OriginSecretDecrypted secrets = 2;
+    originsrv.OriginProject project = 3;
+}
+
+message BuildResponse {
+    bool job_status = 1;
 }
