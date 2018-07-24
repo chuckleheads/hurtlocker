@@ -35,12 +35,12 @@ var startCmd = &cobra.Command{
 		failOnError(err, "Failed to declare an exchange")
 
 		q, err := ch.QueueDeclare(
-			"",    // name
-			false, // durable
-			false, // delete when usused
-			true,  // exclusive
-			false, // no-wait
-			nil,   // arguments
+			rmqConfig.Queue, // name
+			true,            // durable
+			false,           // delete when usused
+			false,           // exclusive
+			false,           // no-wait
+			nil,             // arguments
 		)
 		failOnError(err, "Failed to declare a queue")
 
@@ -72,11 +72,11 @@ var startCmd = &cobra.Command{
 		go func() {
 			for d := range msgs {
 				switch d.RoutingKey {
-				case "build.linux":
+				case "linux.build":
 					dispatcher.Build(d.Body)
 				case "deploy":
 					dispatcher.Deploy(d.Body)
-				case "export.docker":
+				case "linux.export":
 					dispatcher.Export(d.Body)
 				default:
 					panic("unreachable")
