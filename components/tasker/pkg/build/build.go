@@ -56,16 +56,27 @@ func (b *BuildCli) Start() {
 }
 
 func (b *BuildCli) fetchDeps() {
-	cmd.RunCommand(b.logsrv, "hab", "pkg", "install", "chuckleheads/fetch-code", "-b")
-	cmd.RunCommand(b.logsrv, "hab", "pkg", "install", "core/hab-backline", "core/hab-plan-build")
+	exit, err := cmd.RunCommand(b.logsrv,
+		"hab", "pkg", "install", "chuckleheads/fetch-code", "-b")
+	catch(exit, err)
+	exit, err = cmd.RunCommand(b.logsrv,
+		"hab", "pkg", "install", "core/hab-backline", "core/hab-plan-build")
+	catch(exit, err)
 }
 
 func (b *BuildCli) cloneRepo() {
-	cmd.RunCommand(b.logsrv, "hab", "pkg", "exec", "chuckleheads/fetch-code", "fetch-code", "--url", b.repoURL, "--path", b.basePath)
+	exit, err := cmd.RunCommand(b.logsrv,
+		"hab", "pkg", "exec", "chuckleheads/fetch-code", "fetch-code",
+		"--url", b.repoURL, "--path", b.basePath)
+	catch(exit, err)
+
 }
 
 func (b *BuildCli) build() {
-	cmd.RunCommand(b.logsrv, "hab", "pkg", "exec", "core/hab-plan-build", "hab-plan-build", filepath.Join(b.basePath, filepath.Dir(b.planPath)))
+	exit, err := cmd.RunCommand(b.logsrv,
+		"hab", "pkg", "exec", "core/hab-plan-build", "hab-plan-build",
+		filepath.Join(b.basePath, filepath.Dir(b.planPath)))
+	catch(exit, err)
 }
 
 func (b *BuildCli) uploadArtifact() {
@@ -73,7 +84,9 @@ func (b *BuildCli) uploadArtifact() {
 	if err != nil {
 		panic(err)
 	}
-	cmd.RunCommand(b.logsrv, "hab", "pkg", "upload", artifact, "-c", viper.GetString("channel"))
+	exit, err := cmd.RunCommand(b.logsrv, "hab", "pkg", "upload",
+		artifact, "-c", viper.GetString("channel"))
+	catch(exit, err)
 }
 
 func findHart(path string) (string, error) {
@@ -85,4 +98,10 @@ func findHart(path string) (string, error) {
 		return "", fmt.Errorf("No Matches Found in %s", path)
 	}
 	return matches[0], nil
+}
+
+func catch(exit int, err error) {
+	if exit != 0 || err != nil {
+		log.Fatalln("Failed to successfully execute command")
+	}
 }

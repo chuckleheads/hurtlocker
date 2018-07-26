@@ -13,7 +13,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func RunCommand(stream pb.LogRecv_ReceiveLogsClient, command ...string) {
+func RunCommand(stream pb.LogRecv_ReceiveLogsClient, command ...string) (int, error) {
 	// Disable output buffering, enable streaming
 	cmdOptions := cmd.Options{
 		Buffered:  false,
@@ -60,6 +60,7 @@ func RunCommand(stream pb.LogRecv_ReceiveLogsClient, command ...string) {
 			log.Printf("Route summary: %v", reply)
 		}
 	}
+	return habCmd.Status().Exit, habCmd.Status().Error
 }
 
 func sendStream(stream pb.LogRecv_ReceiveLogsClient, line pbr.LogLine) {
