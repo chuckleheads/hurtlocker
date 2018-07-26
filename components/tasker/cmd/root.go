@@ -25,7 +25,10 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file")
 	rootCmd.PersistentFlags().StringVar(&cfgString, "config-string", "", "a base64 encoded config string (useful for passing config though containers)")
 	rootCmd.PersistentFlags().Bool("enable-log-stream", false, "Enable log streaming via gRPC")
+	rootCmd.PersistentFlags().String("bldr-url", "https://bldr.habitat.sh", "Sets the Builder URL to use for all Hab commands")
 	viper.BindPFlag("enable-log-stream", rootCmd.Flags().Lookup("enable-log-stream"))
+	viper.BindPFlag("bldr-url", rootCmd.Flags().Lookup("bldr-url"))
+
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

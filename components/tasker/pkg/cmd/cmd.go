@@ -25,7 +25,8 @@ func RunCommand(stream pb.LogRecv_ReceiveLogsClient, command ...string) {
 	habCmd := cmd.NewCmdOptions(cmdOptions, kommand, args...)
 	//filthy hack because I'm lazy
 	origin := fmt.Sprintf("HAB_ORIGIN=%s", viper.GetString("project.origin_name"))
-	habCmd.Env = []string{origin}
+	bldr := fmt.Sprintf("HAB_BLDR_URL=%s", viper.GetString("bldr-url"))
+	habCmd.Env = []string{origin, bldr}
 	// Print STDOUT and STDERR lines streaming from Cmd
 	go func() {
 		for {

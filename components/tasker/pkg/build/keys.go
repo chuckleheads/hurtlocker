@@ -17,7 +17,7 @@ import (
 
 func fetchOriginKey(origin string) ([]byte, string) {
 	tokenLife := time.Duration(2) * time.Hour
-	client := client.New("https://bldr.acceptance.habitat.sh", generateAccessToken(0, uint32(7), tokenLife))
+	client := client.New(viper.GetString("bldr-url"), generateAccessToken(0, uint32(7), tokenLife))
 	sk, name, err := client.FetchOriginSecretKey(origin)
 	if err != nil {
 		log.Fatalln(err)
