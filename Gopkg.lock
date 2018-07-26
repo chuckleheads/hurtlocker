@@ -2,6 +2,16 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/GoKillers/libsodium-go"
+  packages = [
+    "cryptobox",
+    "randombytes",
+    "support"
+  ]
+  revision = "dd733721c3cbec0224c4bb759642300c302cc9ad"
+
+[[projects]]
   name = "github.com/Microsoft/go-winio"
   packages = ["."]
   revision = "67921128fb397dd80339870d2193d6b1e6856fd4"
@@ -12,6 +22,18 @@
   packages = ["."]
   revision = "3f4e9b1898e6b65e31827d5dccb97d91d59feaa3"
   version = "v0.1.2"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/chuckleheads/habitat"
+  packages = [
+    "components/builder-depot-client/client",
+    "components/builder-depot-client/types",
+    "components/core/ident",
+    "components/hab/pkg/crypto",
+    "components/hab/pkg/crypto/keys"
+  ]
+  revision = "70f75b24607bf399ac0c6960e142bc981b031f5e"
 
 [[projects]]
   branch = "master"
@@ -107,6 +129,12 @@
   packages = ["."]
   revision = "b84ca4f2247327f07f46331c260675cba1a1dc7a"
   version = "v1.0.3"
+
+[[projects]]
+  name = "github.com/go-resty/resty"
+  packages = ["."]
+  revision = "fccc498aed22c31ff3768bcac00795f94149a21d"
+  version = "v1.7.0"
 
 [[projects]]
   name = "github.com/gogo/protobuf"
@@ -303,6 +331,7 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = [
+    "blake2b",
     "cast5",
     "curve25519",
     "ed25519",
@@ -335,6 +364,7 @@
     "internal/socks",
     "internal/timeseries",
     "proxy",
+    "publicsuffix",
     "trace"
   ]
   revision = "d0887baf81f4598189d4e12a37c6da86f0bba4d0"
@@ -343,6 +373,7 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = [
+    "cpu",
     "unix",
     "windows"
   ]
@@ -484,6 +515,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f278ddb3caa368b503cac803edfda01687c1cdd73a27a2b79bb745a2f38c5098"
+  inputs-digest = "fed5ddbaff5c1179a87f7e5c5dfb307a2cf7df945c5efe02451ad42a1a3b6a5f"
   solver-name = "gps-cdcl"
   solver-version = 1
