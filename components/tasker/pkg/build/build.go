@@ -47,7 +47,7 @@ func New(basePath string) BuildCli {
 
 func (b *BuildCli) Start() {
 	// TED TODO: should be checking for errors here and bailing early
-	writeKeyToDisk(fetchOriginKey("core"))
+	writeKeyToDisk(fetchOriginKey(viper.GetString("project.origin_name")))
 	os.Chdir(b.basePath)
 	b.fetchDeps()
 	b.cloneRepo()
