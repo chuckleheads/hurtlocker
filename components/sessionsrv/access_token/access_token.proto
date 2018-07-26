@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package hurtlocker.sessionsrv.access_token;
+option go_package = "github.com/chuckleheads/hurtlocker/components/sessionsrv/access_token";
+
+message AccessToken {
+    uint64 account_id = 1;
+    uint32 flags = 2;
+    int64 expires = 3;
+}

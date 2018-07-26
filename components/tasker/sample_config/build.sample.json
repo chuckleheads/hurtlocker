@@ -9,5 +9,10 @@
     "vcs_type":"git",
     "vcs_data":"https://github.com/elliott-davis/core-plans",
     "vcs_installation_id":250304
+  },
+  "bldr": {
+    "_comment": "Nobody panic, these are fake keys",
+    "private": "BOX-SEC-1\nbldr-20180726142909\n\n+bGewNOnwxnQzqu4nkceul63f3THgB39j2AcWKXlKQw=",
+    "public": "BOX-PUB-1\nbldr-20180726142909\n\nj//3rVCl8L7nFkB0VwuBbcWZ8Db5zWd3GO/wiA0vkwk="
   }
 }
