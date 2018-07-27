@@ -13,7 +13,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-// Access token prefix rules:
+// AccessTokenPrefix rules:
 // MUST CONTAIN AN *INVALID* base-64 character
 // MUST NOT CONTAIN shell special characters (eg, !)
 // SHOULD be URL-safe (just in case)
@@ -46,7 +46,6 @@ func New(basePath string) BuildCli {
 }
 
 func (b *BuildCli) Start() {
-	// TED TODO: should be checking for errors here and bailing early
 	writeKeyToDisk(fetchOriginKey(viper.GetString("project.origin_name")))
 	os.Chdir(b.basePath)
 	b.fetchDeps()

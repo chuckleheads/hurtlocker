@@ -21,7 +21,7 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
+	cobra.OnInitialize(initConfig, validateConfig)
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file")
 	rootCmd.PersistentFlags().StringVar(&cfgString, "config-string", "", "a base64 encoded config string (useful for passing config though containers)")
 	rootCmd.PersistentFlags().Bool("enable-log-stream", false, "Enable log streaming via gRPC")
@@ -62,4 +62,21 @@ func initConfig() {
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
+}
+
+func validateConfig() {
+	requiredConfig := []string{"project.origin_name",
+		"project.package_name",
+		"project.name",
+		"project.plan_path",
+		"project.vcs_data",
+		"bldr.private",
+		"bldr.public",
+	}
+	for _, req := range requiredConfig {
+		if !viper.IsSet(req) {
+			log.Fatalln("Missing required config value for: ", req)
+			os.Exit(1)
+		}
+	}
 }
