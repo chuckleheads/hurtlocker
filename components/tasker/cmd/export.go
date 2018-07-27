@@ -24,7 +24,7 @@ func init() {
 	rootCmd.AddCommand(exportCmd)
 }
 
-// validateConfig ensures any config values we depend on for running a job are present before starting
+// validateExportConfig ensures any config values we depend on for running a job are present before starting
 func validateExportConfig() {
 	requiredConfig := []string{"ident",
 		"channel",

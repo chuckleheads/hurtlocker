@@ -34,7 +34,7 @@ func tempdir() string {
 	return dir
 }
 
-// validateConfig ensures any config values we depend on for running a job are present before starting
+// validateBuildConfig ensures any config values we depend on for running a job are present before starting
 func validateBuildConfig() {
 	requiredConfig := []string{"project.origin_name",
 		"project.package_name",
